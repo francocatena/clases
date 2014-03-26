@@ -1,0 +1,12 @@
+---
+layout: post
+title:  Clase 1 (Introducción)
+date:   2014-01-26 17:46:35
+categories: clases
+---
+
+Hola mundo en Ruby:
+
+{% highlight ruby %}
+puts "¡Hola mundo!"
+{% endhighlight %}

@@ -2,3 +2,5 @@ name: Taller de Ruby
 markdown: redcarpet
 pygments: true
 permalink: pretty
+redcarpet:
+  extensions: [autolink, strikethrough, tables]

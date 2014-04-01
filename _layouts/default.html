@@ -1,16 +1,20 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="es">
 <head>
   <meta charset="utf-8">
   <title>{{ page.title }}</title>
-  <meta name="viewport" content="width=device-width">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="stylesheet" href="/css/syntax.css">
   <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/main.css">
+
+  <script type="text/javascript" src="/js/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/bootstrap.min.js"></script>
 
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
-<body>
+<body data-spy="scroll" data-target="[data-spy-target]">
   <div class="container">
     {% include header.html %}
 

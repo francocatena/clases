@@ -1,0 +1,12 @@
+body {
+  padding-top: 70px;
+}
+
+.section-anchor {
+  padding-top: 70px;
+  margin-top: -70px;
+}
+
+.tab-pane.active {
+  padding-top: 1em;
+}

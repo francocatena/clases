@@ -142,9 +142,9 @@ No podemos ignorarlos en un curso así =)
 
 #### Mucha charla ####
 
-A preparar el ambiente, primero instalá Ruby y Rails, mirá [Instalación][]
+A preparar el ambiente, primero instalá Ruby y Rails, mirá las instrucciones de [instalación][]
 
-[Instalación]: /instalacion "Instalación"
+[instalación]: /instalacion "Instalación"
 
 #### La primera aplicación ####
 

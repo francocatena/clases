@@ -149,8 +149,8 @@ A preparar el ambiente, primero instalá Ruby y Rails, mirá las instrucciones d
 #### La primera aplicación ####
 
 ```console
-rails new blog -d sqlite3
-cd blog
+rails new foro -d sqlite3
+cd foro
 rails g scaffold persona nombre apellido
 rake db:migrate
 rails s

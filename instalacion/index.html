@@ -23,10 +23,10 @@ title: Instalación
 $ sudo apt-get install build-essential git nodejs
 $ sudo apt-get install libsqlite3-dev libxslt1-dev libxml2-dev libssl-dev libreadline-dev libyaml-dev
 $ git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
-$ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
-$ echo 'eval "$(rbenv init -)"' >> ~/.bashrc
 $ git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
 $ git clone https://github.com/sstephenson/rbenv-gem-rehash.git ~/.rbenv/plugins/rbenv-gem-rehash
+$ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+$ echo 'eval "$(rbenv init -)"' >> ~/.bashrc
         {% endhighlight %}
 
         <p>
@@ -81,10 +81,10 @@ $ sudo gem install sqlite3
 $ sudo pacman -S base-devel nodejs git
 $ sudo pacman -S libxslt libxml2 libyaml openssl readline
 $ git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
-$ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
-$ echo 'eval "$(rbenv init -)"' >> ~/.bashrc
 $ git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
 $ git clone https://github.com/sstephenson/rbenv-gem-rehash.git ~/.rbenv/plugins/rbenv-gem-rehash
+$ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+$ echo 'eval "$(rbenv init -)"' >> ~/.bashrc
         {% endhighlight %}
 
         <p>
@@ -147,3 +147,8 @@ $ sudo gem install sqlite3
     </div>
   </div>
 </div>
+
+<p class="lead">
+  También podés ver y comentar la versión fácil en forma de scripts en:
+  <a href="https://gist.github.com/francocatena/9926690">https://gist.github.com/francocatena/9926690</a>
+</p>

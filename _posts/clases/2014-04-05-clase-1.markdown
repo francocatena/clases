@@ -52,6 +52,19 @@ El clásico _Hola Mundo_
 puts "¡Hola mundo!"
 ```
 
+<div>
+  <a class="btn btn-default btn-xs" data-toggle="collapse" data-parent=".output" href="#ej1-output">
+    Salida
+  </a>
+
+  <div class="collapse" id="ej1-output">
+    <br>
+    <pre>
+¡Hola mundo!
+    </pre>
+  </div>
+</div>
+
 #### Con esteroides ####
 
 Imprimir 5 veces _¡Hola mundo!_
@@ -61,6 +74,23 @@ Imprimir 5 veces _¡Hola mundo!_
   puts "¡Hola mundo!"
 end
 ```
+
+<div>
+  <a class="btn btn-default btn-xs" data-toggle="collapse" data-parent=".output" href="#ej2-output">
+    Salida
+  </a>
+
+  <div class="collapse" id="ej2-output">
+    <br>
+    <pre>
+¡Hola mundo!
+¡Hola mundo!
+¡Hola mundo!
+¡Hola mundo!
+¡Hola mundo!
+    </pre>
+  </div>
+</div>
 
 #### ¿En castellano? ####
 
@@ -77,6 +107,23 @@ end
 
 5.veces { mostrar "¡Hola Mundo!" }
 ```
+
+<div>
+  <a class="btn btn-default btn-xs" data-toggle="collapse" data-parent=".output" href="#ej3-output">
+    Salida
+  </a>
+
+  <div class="collapse" id="ej3-output">
+    <br>
+    <pre>
+¡Hola mundo!
+¡Hola mundo!
+¡Hola mundo!
+¡Hola mundo!
+¡Hola mundo!
+    </pre>
+  </div>
+</div>
 
 #### Las gemas ####
 

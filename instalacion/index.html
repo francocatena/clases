@@ -3,23 +3,24 @@ layout: default
 title: Instalación
 ---
 
-<div class="page-header">
-  <h1>Instalación</h1>
-</div>
-
-<div class="panel-group" id="accordion">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a data-toggle="collapse" data-parent="#accordion" href="#ubuntu">
-          <span class="glyphicon glyphicon-thumbs-up"></span>
-          Ubuntu (13.10) <em>pelo en pecho edition</em>
-        </a>
-      </h4>
+<div class="row">
+  <div class="col-md-2">
+    <div data-spy="affix" data-spy-target>
+      <ul class="nav nav-pills nav-stacked">
+        <li class="active"><a href="#ubuntu">Ubuntu</a></li>
+        <li><a href="#archlinux">Archlinux</a></li>
+        <li><a href="#windows">Windows</a></li>
+      </ul>
     </div>
-    <div id="ubuntu" class="panel-collapse collapse in">
-      <div class="panel-body">
-        {% highlight console %}
+  </div>
+  <div class="col-md-10">
+    <div class="page-header">
+      <h3 class="section-anchor" id="ubuntu">Ubuntu</h3>
+    </div>
+
+    <h4>Pelo en pecho edition</h4>
+
+    {% highlight console %}
 $ sudo apt-get install build-essential git nodejs
 $ sudo apt-get install libsqlite3-dev libxslt1-dev libxml2-dev libssl-dev libreadline-dev libyaml-dev
 $ git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
@@ -27,57 +28,42 @@ $ git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-
 $ git clone https://github.com/sstephenson/rbenv-gem-rehash.git ~/.rbenv/plugins/rbenv-gem-rehash
 $ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
 $ echo 'eval "$(rbenv init -)"' >> ~/.bashrc
-        {% endhighlight %}
+    {% endhighlight %}
 
-        <p>
-          Cerrar el terminal y abrirlo nuevamente (para que se ejecute lo que
-          agregamos en <code>.bashrc</code>)
-        </p>
+    <p>
+      Cerrar el terminal y abrirlo nuevamente (para que se ejecute lo que agregamos
+      en <code>.bashrc</code>)
+    </p>
 
-        {% highlight console %}
+    {% highlight console %}
 $ rbenv install 2.1.1
 $ rbenv global 2.1.1
 $ echo "gem: --no-ri --no-rdoc" > ~/.gemrc
 $ gem update --system
 $ gem install rails --pre
 $ gem install sqlite3
-        {% endhighlight %}
-      </div>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a data-toggle="collapse" data-parent="#accordion" href="#ubuntu-apt">
-          Ubuntu (13.10) puro Apt-Get
-        </a>
-      </h4>
-    </div>
-    <div id="ubuntu-apt" class="panel-collapse collapse">
-      <div class="panel-body">
-        {% highlight console %}
+    {% endhighlight %}
+
+    <br>
+
+    <h4>Puro <kbd>apt-get</kbd></h4>
+
+    {% highlight console %}
 $ sudo apt-get install build-essential nodejs
 $ sudo apt-get install ruby2.0 ruby2.0-dev
 $ sudo apt-get install libsqlite3-dev libxslt1-dev libxml2-dev libyaml-dev
 $ sudo gem update --system
 $ sudo gem install rails --pre
 $ sudo gem install sqlite3
-        {% endhighlight %}
-      </div>
+    {% endhighlight %}
+
+    <div class="page-header">
+      <h3 class="section-anchor" id="archlinux">Archlinux</h3>
     </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a data-toggle="collapse" data-parent="#accordion" href="#archlinux">
-          <span class="glyphicon glyphicon-thumbs-up"></span>
-          Archlinux <em>pelo en pecho edition</em>
-        </a>
-      </h4>
-    </div>
-    <div id="archlinux" class="panel-collapse collapse">
-      <div class="panel-body">
-        {% highlight console %}
+
+    <h4>Pelo en pecho edition</h4>
+
+    {% highlight console %}
 $ sudo pacman -S base-devel nodejs git
 $ sudo pacman -S libxslt libxml2 libyaml openssl readline zlib
 $ git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
@@ -85,68 +71,55 @@ $ git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-
 $ git clone https://github.com/sstephenson/rbenv-gem-rehash.git ~/.rbenv/plugins/rbenv-gem-rehash
 $ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
 $ echo 'eval "$(rbenv init -)"' >> ~/.bashrc
-        {% endhighlight %}
+    {% endhighlight %}
 
-        <p>
-          Cerrar el terminal y abrirlo nuevamente (para que se ejecute lo que
-          agregamos en <code>.bashrc</code>)
-        </p>
+    <p>
+      Cerrar el terminal y abrirlo nuevamente (para que se ejecute lo que agregamos
+      en <code>.bashrc</code>)
+    </p>
 
-        {% highlight console %}
+    {% highlight console %}
 $ curl -fsSL https://gist.github.com/mislav/a18b9d7f0dc5b9efc162.txt | rbenv install --patch 2.1.1
 $ rbenv global 2.1.1
 $ echo "gem: --no-ri --no-rdoc" > ~/.gemrc
 $ gem update --system
 $ gem install rails
 $ gem install sqlite3
-        {% endhighlight %}
-      </div>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a data-toggle="collapse" data-parent="#accordion" href="#archlinux-pacman">
-          Archlinux puro Pacman
-        </a>
-      </h4>
-    </div>
-    <div id="archlinux-pacman" class="panel-collapse collapse">
-      <div class="panel-body">
-        {% highlight console %}
+    {% endhighlight %}
+
+    <br>
+
+    <h4>Puro <kbd>pacman</kbd></h4>
+
+    {% highlight console %}
 $ sudo pacman -S base-devel nodejs
 $ sudo pacman -S ruby
 $ sudo pacman -S libxslt libxml2 libyaml
 $ sudo gem update --system
 $ sudo gem install rails
 $ sudo gem install sqlite3
-        {% endhighlight %}
-      </div>
+    {% endhighlight %}
+
+    <div class="page-header">
+      <h3 class="section-anchor" id="windows">Windows</h3>
     </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-          Windows
-        </a>
-      </h4>
-    </div>
-    <div id="collapseThree" class="panel-collapse collapse">
-      <div class="panel-body">
-        <p>
-          ¿De verdad? OK
-        </p>
-        <p>
-          Descargá el instalador <strong>alpha</strong> (Ruby 2.0 y Rails 4.0)
-          desde <a href="http://railsinstaller.org/">http://railsinstaller.org/</a>
-          o directamente desde
-          <a href="https://github.com/railsinstaller/railsinstaller-windows/releases/download/3.0.0-alpha.2/railsinstaller-3.0.0.exe">acá</a>
-        </p>
-      </div>
-    </div>
+
+    <p>
+      ¿De verdad? OK
+    </p>
+
+    <p>
+      Descargá el instalador <strong>alpha</strong> (Ruby 2.0 y Rails 4.0)
+      desde <a href="http://railsinstaller.org/">http://railsinstaller.org/</a>
+      o directamente desde
+      <a href="https://github.com/railsinstaller/railsinstaller-windows/releases/download/3.0.0-alpha.2/railsinstaller-3.0.0.exe">
+        acá
+      </a>
+    </p>
   </div>
 </div>
+
+<hr>
 
 <p class="lead">
   También podés ver y comentar la versión fácil en forma de scripts en:

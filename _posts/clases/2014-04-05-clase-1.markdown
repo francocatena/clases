@@ -152,11 +152,11 @@ En _Rubylandia_ tienen mucha importancia
 
 #### ¿Y Rake? ####
 
-Similar a <code>make</code> (¿Uh?), permite automatizar tareas
+Similar a <kbd>make</kbd> (¿Uh?), permite automatizar tareas
 
-- Ejecutar pruebas → <code>rake test</code>
-- Ver mis URLs → <code>rake routes</code>
-- Actualizar esquema de BD → <code>rake db:migrate</code>
+- Ejecutar pruebas → <kbd>rake test</kbd>
+- Ver mis URLs → <kbd>rake routes</kbd>
+- Actualizar esquema de BD → <kbd>rake db:migrate</kbd>
 
 <div class="page-header"><h3 class="section-anchor" id="rails">Rails</h3></div>
 
@@ -311,9 +311,9 @@ $ git config --global color.ui auto
 
 #### Operaciones básicas ####
 
-- Inicialización => <code>init</code>
-- Copia => <code>clone</code>
-- Cambio de rama => <code>checkout</code>
+- Inicialización → <code>init</code>
+- Copia → <code>clone</code>
+- Cambio de rama → <code>checkout</code>
 
 #### A trabajar #####
 

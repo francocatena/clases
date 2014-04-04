@@ -9,6 +9,8 @@ sections:
   rails: 'Rails'
   navegadores: 'Los navegadores'
   primeros-pasos: 'Primeros pasos'
+  versionado: 'Versionado'
+  resumen: 'Resumen'
 
 ---
 
@@ -16,7 +18,7 @@ sections:
 
 #### ¿Es para mí? ####
 
-Si disfrutás _armar_ (o desararmar) _cosas_, si, es para vos
+Si disfrutás _armar_ (o desarmar) _cosas_, si, es para vos
 
 #### ¿Esto lo usa alguien? ####
 
@@ -196,11 +198,11 @@ A preparar el ambiente, primero instalá Ruby y Rails, mirá las instrucciones d
 #### La primera aplicación ####
 
 ```console
-rails new foro -d sqlite3
-cd foro
-rails g scaffold persona nombre apellido
-rake db:migrate
-rails s
+$ rails new foro -d sqlite3
+$ cd foro
+$ rails g scaffold persona nombre apellido
+$ rake db:migrate
+$ rails s
 ```
 
 #### El resultado ####
@@ -209,8 +211,150 @@ Visitemos [http://localhost:3000/](http://localhost:3000/)
 
 Si todo se ve bien, ahora veamos [http://localhost:3000/personas](http://localhost:3000/personas)
 
-#### En resumen ####
+<div class="page-header"><h3 class="section-anchor" id="versionado">Versionado</h3></div>
+
+#### ¿Para qué? ####
+
+Para manejar cambios en archivos (como documentos, código, imágenes, etc)
+
+#### Eso yo lo hago... ####
+
+1. Algo.txt
+2. Algo\_nuevo.txt
+3. Algo\_final.txt
+4. Algo\_final\_final.txt
+5. Algo\_este\_si\_es\_el\_ultimo.txt
+
+#### Yo programo ####
+
+Y obviamente no hago eso... ¿O si?
+
+```ruby
+#def funcion_dudosa
+#  boom!
+#end
+
+def funcion_bien_hecha
+  puts 'Esta función seguro hace lo que quiero'
+end
+```
+
+#### Otra forma ####
+
+O la forma de los **machos** (obviamente es la que uso yo)
+
+Usar una herramienta que nos ayude a llevar la historia
+
+
+#### Alternativas ####
+
+- CVS
+- Subversion
+- Git
+
+#### Componentes de Git ####
+
+##### Archivos #####
+
+Son los archivos, los directorios, los enlaces simbólicos, etc.
+
+##### Revisiones #####
+
+Una revisión es un cambio y contiene:
+
+- Archivo(s)
+- Datos de usuario
+- Fecha
+- Y más...
+
+##### Referencias #####
+
+Cada revisión contiene información sobre su ascendencia
+
+#### Apuntadores ####
+
+- Etiquetas
+- Ramas
+- Actual (o HEAD)
+
+#### Estructura ####
+
+- Repositorio es el directorio <code>.git</code>
+- Indice Cambios a incluir en la próxima revisión
+- Directorio de trabajo Es lo que **veo**
+
+#### Comandos ####
+
+La forma básica es
+
+```console
+$ git [opciones] <comando> [opciones]
+```
+
+#### Ayuda ####
+
+```console
+$ git help
+$ git <comando> -h
+$ git help <comando>
+```
+
+#### Configuración ####
+
+Vive en <code>$HOME/.gitconfig</code>
+
+```console
+$ git config --global user.name "Franco Catena"
+$ git config --global user.email francocatena@gmail.com
+$ git config --global color.ui auto
+```
+
+#### Operaciones básicas ####
+
+- Inicialización => <code>init</code>
+- Copia => <code>clone</code>
+- Cambio de rama => <code>checkout</code>
+
+#### A trabajar #####
+
+```console
+$ cd foro
+$ git init
+$ ls -a
+```
+
+Y hacemos nuestro primer commit
+
+```console
+$ git status
+$ git add .
+$ git status # Si, otra vez
+$ git commit -m "Primer revisión del foro"
+$ git status # Y si, una más
+```
+
+Los estados en los que se pueden encontrar los archivos son:
+
+- **Staged**: forma parte del próximo commit
+- **Unstaged**: no forma parte del próximo commit (pero Git ya conoce parte de su historia)
+- **Untracked**: no forma parte del próximo commit (y Git no conoce su historia)
+- **Ignored**: no forma parte del próximo commit (Git los ignora deliberadamente)
+
+#### Github (opcional) ####
+
+Para subir nuestro trabajo a [Github][] (si no lo tenés) creá un usuario y
+seguí las instrucciones de configuración. Después ejecutá:
+
+```console
+$ git remote add origin git@github.com:rubyutn/foro.git
+$ git push -u origin master
+```
+
+[Github]: https://github.com/
+
+<div class="page-header"><h3 class="section-anchor" id="resumen">Resumen</h3></div>
 
 - Instalamos todo nuestro ambiente
 - Creamos el esqueleto de una aplicación
 - Creamos un ABM funcional
+- Versionamos y publicamos nuestra aplicación

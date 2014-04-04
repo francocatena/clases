@@ -5,7 +5,11 @@ layout: default
   <div class="col-md-2" data-spy-target>
     <ul class="nav nav-pills nav-stacked affix">
       {% for section in page.sections %}
-        <li><a href="#{{ section[0] }}">{{ section[1] }}</a></li>
+        {% if forloop.first %}
+        <li class="active">{% else %}<li>
+        {% endif %}
+          <a href="#{{ section[0] }}">{{ section[1] }}</a>
+        </li>
       {% endfor %}
     </ul>
   </div>

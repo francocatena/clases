@@ -354,11 +354,11 @@ Los estados en los que se pueden encontrar los archivos son:
 
 #### Github (opcional) ####
 
-Para subir nuestro trabajo a [Github][] (si no lo tenés) creá un usuario y
+Para subir nuestro trabajo a [Github][] creá un usuario (si no lo tenés) y
 seguí las instrucciones de configuración. Después ejecutá:
 
 ```console
-$ git remote add origin git@github.com:rubyutn/foro.git
+$ git remote add origin git@github.com:rubyutn/foro.git # con tu repositorio
 $ git push -u origin master
 ```
 

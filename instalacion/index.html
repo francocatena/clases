@@ -13,14 +13,29 @@ title: Instalación
       </ul>
     </div>
   </div>
+
   <div class="col-md-10">
     <div class="page-header">
       <h3 class="section-anchor" id="ubuntu">Ubuntu</h3>
     </div>
 
-    <h4>Pelo en pecho edition</h4>
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a href="#ubuntu-rbenv" data-toggle="tab">
+            <span class="glyphicon glyphicon-thumbs-up"></span>
+            Pelo en pecho edition
+        </a>
+      </li>
+      <li>
+        <a href="#ubuntu-apt-get" data-toggle="tab">
+          Puro <kbd>apt-get</kbd>
+        </a>
+      </li>
+    </ul>
 
-    {% highlight console %}
+    <div class="tab-content">
+      <div class="tab-pane active fade in" id="ubuntu-rbenv">
+        {% highlight console %}
 $ sudo apt-get install build-essential git nodejs
 $ sudo apt-get install libsqlite3-dev libxslt1-dev libxml2-dev libssl-dev libreadline-dev libyaml-dev
 $ git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
@@ -28,42 +43,57 @@ $ git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-
 $ git clone https://github.com/sstephenson/rbenv-gem-rehash.git ~/.rbenv/plugins/rbenv-gem-rehash
 $ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
 $ echo 'eval "$(rbenv init -)"' >> ~/.bashrc
-    {% endhighlight %}
+        {% endhighlight %}
 
-    <p>
-      Cerrar el terminal y abrirlo nuevamente (para que se ejecute lo que agregamos
-      en <code>.bashrc</code>)
-    </p>
+        <p>
+          Cerrar el terminal y abrirlo nuevamente (para que se ejecute lo que agregamos
+          en <code>.bashrc</code>)
+        </p>
 
-    {% highlight console %}
+        {% highlight console %}
 $ rbenv install 2.1.1
 $ rbenv global 2.1.1
 $ echo "gem: --no-ri --no-rdoc" > ~/.gemrc
 $ gem update --system
 $ gem install rails --pre
 $ gem install sqlite3
-    {% endhighlight %}
+        {% endhighlight %}
+      </div>
 
-    <br>
-
-    <h4>Puro <kbd>apt-get</kbd></h4>
-
-    {% highlight console %}
+    <div class="tab-pane fade" id="ubuntu-apt-get">
+      {% highlight console %}
 $ sudo apt-get install build-essential nodejs
 $ sudo apt-get install ruby2.0 ruby2.0-dev
 $ sudo apt-get install libsqlite3-dev libxslt1-dev libxml2-dev libyaml-dev
 $ sudo gem update --system
 $ sudo gem install rails --pre
 $ sudo gem install sqlite3
-    {% endhighlight %}
+      {% endhighlight %}
+    </div>
+  </div>
 
     <div class="page-header">
       <h3 class="section-anchor" id="archlinux">Archlinux</h3>
     </div>
 
-    <h4>Pelo en pecho edition</h4>
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a href="#archlinux-rbenv" data-toggle="tab">
+            <span class="glyphicon glyphicon-thumbs-up"></span>
+            Pelo en pecho edition
+        </a>
+      </li>
+      <li>
+        <a href="#archlinux-pacman" data-toggle="tab">
+          Puro <kbd>pacman</kbd>
+        </a>
+      </li>
+    </ul>
 
-    {% highlight console %}
+    <div class="tab-content">
+      <div class="tab-pane active fade in" id="archlinux-rbenv">
+
+        {% highlight console %}
 $ sudo pacman -S base-devel nodejs git
 $ sudo pacman -S libxslt libxml2 libyaml openssl readline zlib
 $ git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
@@ -71,34 +101,35 @@ $ git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-
 $ git clone https://github.com/sstephenson/rbenv-gem-rehash.git ~/.rbenv/plugins/rbenv-gem-rehash
 $ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
 $ echo 'eval "$(rbenv init -)"' >> ~/.bashrc
-    {% endhighlight %}
+        {% endhighlight %}
 
-    <p>
-      Cerrar el terminal y abrirlo nuevamente (para que se ejecute lo que agregamos
-      en <code>.bashrc</code>)
-    </p>
+        <p>
+          Cerrar el terminal y abrirlo nuevamente (para que se ejecute lo que agregamos
+          en <code>.bashrc</code>)
+        </p>
 
-    {% highlight console %}
+        {% highlight console %}
 $ curl -fsSL https://gist.github.com/mislav/a18b9d7f0dc5b9efc162.txt | rbenv install --patch 2.1.1
 $ rbenv global 2.1.1
 $ echo "gem: --no-ri --no-rdoc" > ~/.gemrc
 $ gem update --system
 $ gem install rails --pre
 $ gem install sqlite3
-    {% endhighlight %}
+        {% endhighlight %}
+      </div>
 
-    <br>
+      <div class="tab-pane fade" id="archlinux-pacman">
 
-    <h4>Puro <kbd>pacman</kbd></h4>
-
-    {% highlight console %}
+        {% highlight console %}
 $ sudo pacman -S base-devel nodejs
 $ sudo pacman -S ruby
 $ sudo pacman -S libxslt libxml2 libyaml
 $ sudo gem update --system
 $ sudo gem install rails --pre
 $ sudo gem install sqlite3
-    {% endhighlight %}
+        {% endhighlight %}
+      </div>
+    </div>
 
     <div class="page-header">
       <h3 class="section-anchor" id="windows">Windows</h3>

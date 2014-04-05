@@ -14,7 +14,9 @@ sections:
 
 ---
 
-<div class="page-header"><h3 class="section-anchor" id="el-curso">El curso</h3></div>
+<div class="page-header">
+  <h3 class="section-anchor" id="el-curso">El curso</h3>
+</div>
 
 #### ¿Es para mí? ####
 
@@ -39,7 +41,9 @@ Preferentemente conocer como funciona [HTTP][], nada que con entusiasmo no se pu
 Casi toda la buena documentación (y la más actualizada) está en inglés, así que
 si. También con entusiasmo y la ayuda de un traductor lo podés suplir =)
 
-<div class="page-header"><h3 class="section-anchor" id="ruby">Ruby</h3></div>
+<div class="page-header">
+  <h3 class="section-anchor" id="ruby">Ruby</h3>
+</div>
 
 - Dinámico (y mucho...)
 - Simple y elegante
@@ -158,7 +162,9 @@ Similar a <kbd>make</kbd> (¿Uh?), permite automatizar tareas
 - Ver mis URLs → <kbd>rake routes</kbd>
 - Actualizar esquema de BD → <kbd>rake db:migrate</kbd>
 
-<div class="page-header"><h3 class="section-anchor" id="rails">Rails</h3></div>
+<div class="page-header">
+  <h3 class="section-anchor" id="rails">Rails</h3>
+</div>
 
 #### Especializando Ruby ####
 
@@ -171,7 +177,9 @@ Ruby on Rails _[o Rails o RoR]_ extiende Ruby para **especializarlo** en desarro
 - Prueba **todo** (y solo lo que has hecho...)
 - MVC (con solo modelos pesados 2...)
 
-<div class="page-header"><h3 class="section-anchor" id="navegadores">Los navegadores</h3></div>
+<div class="page-header">
+  <h3 class="section-anchor" id="navegadores">Los navegadores</h3>
+</div>
 
 En los navegadores ejecutamos la **mitad** (+-25%) de nuestra aplicación.
 No podemos ignorarlos en un curso así =)
@@ -187,7 +195,9 @@ No podemos ignorarlos en un curso así =)
 [W3C]: http://www.w3.org/ "World Wide Web Consortium"
 [ECMAScript]: http://www.ecmascript.org/ "ECMAScript"
 
-<div class="page-header"><h3 class="section-anchor" id="primeros-pasos">Primeros pasos</h3></div>
+<div class="page-header">
+  <h3 class="section-anchor" id="primeros-pasos">Primeros pasos</h3>
+</div>
 
 #### Mucha charla ####
 
@@ -211,7 +221,9 @@ Visitemos [http://localhost:3000/](http://localhost:3000/)
 
 Si todo se ve bien, ahora veamos [http://localhost:3000/personas](http://localhost:3000/personas)
 
-<div class="page-header"><h3 class="section-anchor" id="versionado">Versionado</h3></div>
+<div class="page-header">
+  <h3 class="section-anchor" id="versionado">Versionado</h3>
+</div>
 
 #### ¿Para qué? ####
 
@@ -352,7 +364,9 @@ $ git push -u origin master
 
 [Github]: https://github.com/
 
-<div class="page-header"><h3 class="section-anchor" id="resumen">Resumen</h3></div>
+<div class="page-header">
+  <h3 class="section-anchor" id="resumen">Resumen</h3>
+</div>
 
 - Instalamos todo nuestro ambiente
 - Creamos el esqueleto de una aplicación

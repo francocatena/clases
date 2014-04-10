@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Clase 1 (Introducción)
+title:  Clase 1 . Introducción
 date:   2014-04-05 16:00:00
 categories: clases
 sections:

@@ -257,7 +257,6 @@ O la forma de los **machos** (obviamente es la que uso yo)
 
 Usar una herramienta que nos ayude a llevar la historia
 
-
 #### Alternativas ####
 
 - CVS

@@ -1,0 +1,367 @@
+---
+layout: post
+title:  Clase 2 (Introducción a Rails)
+date:   2014-04-12 16:00:00
+categories: clases
+sections:
+  estructura: 'La estructura'
+  mvc: 'MVC'
+  ruby: 'Ruby'
+  migraciones: 'Las migraciones'
+
+---
+
+<div class="page-header">
+  <h3 class="section-anchor" id="estructura">La estructura</h3>
+</div>
+
+#### Directorios ####
+
+```console
+$ cd foro
+$ ls
+```
+
+#### Los importantes ####
+
+- <code>app</code> modelos, vistas, controladores...
+- <code>db</code> todo sobre la BBDD (WOW)
+- <code>config</code> configuraciones "globales"
+- <code>public</code> contenido estático...
+- <code>test</code> pruebas (sorprendente...)
+
+
+#### El direcrotio <code>app</code> ####
+
+Generalmente "vivimos" acá...
+
+```console
+$ cd app
+$ ls
+```
+
+#### Dentro de app ####
+
+- <code>models</code> modelos...
+- <code>views</code> vistas...
+- <code>controllers</code> controladores...
+- <code>assets</code> Javascript (o Coffeescript), CSS, imágenes... (¿Uh?)
+- <code>helpers</code> ayudadores... (¿Uh?)
+
+#### Las 7 acciones ####
+
+- <code>index</code> → listar
+- <code>show</code> → ver
+- <code>new</code> → nuevo
+- <code>create</code> → crear
+- <code>edit</code> → editar
+- <code>update</code> → actualizar
+- <code>destroy</code> → eliminar
+
+#### ¿Nuevo y crear? ####
+
+- **Nuevo** significa ver el formulario para crear
+- **Crear** significa agregar o insertar la nueva entidad
+
+Lo mismo aplica para **editar** (nuevo) y **actualizar** (crear)
+
+#### En <code>views</code> ####
+
+Tenemos un directorio para cada entidad (sólo si hace falta)
+
+- <code>\_form</code> (fomulario compartido del modelo)
+- <code>edit</code> (para editar)
+- <code>index</code> (para listar)
+- <code>new</code> (para crear)
+- <code>show</code> (para visualizar)
+
+#### En <code>controllers</code> ####
+
+Tenemos un archivo para cada entidad (sólo si hace falta)
+
+Los nombres se forman con <code>nombre\_plural\_entidad</code> + <code>\_controller.rb</code>
+
+#### En <code>models</code> ####
+
+Tenemos un archivo para cada entidad (A menos que usemos herencia con algo como
+<abbr title="Single Table Inheritance (Herencia de una sola tabla)">STI</abbr>)
+
+Los nombres de los modelos se forman con <code>nombre\_singular\_entidad</code> + <code>.rb</code>
+
+<div class="page-header">
+  <h3 class="section-anchor" id="mvc">MVC</h3>
+</div>
+
+#### Modelos, Vistas y Controladores ####
+
+Es un patrón de diseño para organizar nuestra aplicación
+
+#### El modelo... ####
+
+Es el responsable de mantener el estado (transitorio y permanente)
+
+Administra los datos y contiene las reglas
+
+#### La vista... ####
+
+Es responsable de la interfaz de usuario (o
+<abbr title="User interface (Interfaz de usuario)">UI</abbr>)
+
+Debe presentar los datos y permitir su entrada
+
+#### El controlador... ####
+
+Orquesta la aplicación
+
+1. Recibe un **evento** del mundo exterior
+2. **Interactúa** con el modelo
+3. **Selecciona** la vista apropiada
+
+#### ActiveRecord ####
+
+Es la capa ORM de Rails (el modelo)
+
+##### Ejemplo #####
+
+```ruby
+class Persona < ActiveRecord::Base
+end
+```
+
+Entonces, ahora podemos ejecutar:
+
+```ruby
+# Devuelve la primer persona con nombre 'Franco'
+persona = Persona.find_by(nombre: 'Franco')
+persona.nombre = 'Juan'
+persona.save # Guarda los cambios en la BBDD
+```
+
+#### ActionPack ####
+
+La vista y el controlador juntos (¿Uh?)
+
+- La vista dibuja el <abbr title="HyperText Markup Language (Lenguaje de marcado de hipertexto)">HTML</abbr> (u otro formato)
+- El controlador maneja las peticiones
+
+<div class="page-header">
+  <h3 class="section-anchor" id="ruby">Ruby</h3>
+</div>
+
+**Todo** lo que tocamos es un objeto, y el resultado es también **un objeto**
+
+```ruby
+5 + 2          # => 7
+7.class        # => Fixnum
+7.class.class  # => Class
+nil.class      # => NilClass
+```
+
+#### Literales ####
+
+```ruby
+simple                    # Variable o función
+NombreDeClase             # O módulo
+@variable_de_instancia
+@@variable_de_clase
+$variable_global
+CONSTANTE
+```
+
+#### Manipulaciones ####
+
+```ruby
+"Ruby".reverse # => "ybuR"
+"Ruby".length  # => 4
+"Ruby" * 5     # => "RubyRubyRubyRubyRuby"
+```
+
+#### Asignaciones ####
+
+```ruby
+x = 1              # Tradicional
+x += 1             # Incremento y asignación
+x, y, z = 1, 2, 3  # Múltiple
+x = y = 0          # En cascada
+```
+
+#### Arreglos ####
+
+Son objetos que contienen (o no) una lista de otros
+
+```ruby
+[12, 47, 35]           # => [12, 47, 35]
+[12, 47, 35].max       # => 47
+arreglo = [12, 47, 35] # => [12, 47, 35]
+arreglo                # => [12, 47, 35]
+arreglo.sort!          # => [12, 35, 47]
+```
+
+#### Arreglos asociativos ####
+
+Mejor conocido como **Hashes**
+
+```ruby
+lenguajes = {}                    # => {}
+lenguajes['Ruby']   = 'buenísimo' # => 'buenísimo'
+lenguajes['Python'] = 'bueno'     # => 'bueno'
+lenguajes['PHP']    = 'mmm'       # => 'mmm'
+lenguajes.length                  # => 3
+lenguajes.keys                    # => ["Ruby", "Python", "PHP"]
+```
+
+#### Métodos _raros_ ####
+
+Algunos nombres de métodos _poco convencionales_
+
+```ruby
+texto = "Que bueno Ruby"   # => "Que bueno Ruby"
+texto["Ruby"] = "Rails"    # => "Rails"
+texto                      # => "Que bueno Rails"
+```
+
+Se puede pensar en "estoy buscando \_\_\_\_\_"
+
+#### Definición de métodos ####
+
+```ruby
+def saludo(nombre)
+  resultado = "Hola " + nombre
+  return resultado
+end
+
+# Y a saludar...
+puts saludo("Franco")
+```
+
+No es para tanto, es casi lo mismo que en \_\_\_\_\_
+
+```ruby
+def saludo(nombre)
+  "Hola #{nombre}"
+end
+
+# Y saludamos de nuevo
+puts saludo("Franco")
+```
+
+Ahora si ahorré unas teclas...
+
+#### Estructuras de control ####
+
+Se considera falso:
+
+- <code>nil</code>
+- <code>false</code> (WOW)
+
+#### Estructura de <code>if</code> ####
+
+```ruby
+if intentos > 3
+  puts "Perdiste..."
+elsif intentos == 3
+  puts "¡Vamos! Uno más: "
+else
+  puts "Ingrese un número: "
+end
+```
+
+#### Estructura de <code>while</code> ####
+
+```ruby
+while intentos < 3
+  puts "Ingrese un número: "
+  intentos += 1 # ¡no hay intentos++!
+end
+```
+
+#### Modificadores ####
+
+```ruby
+if edad > 100
+  puts "Nahhh"
+end
+```
+
+Se puede escribir de forma más _compacta_
+
+```ruby
+puts "Nahhh" if edad > 100
+```
+
+Y por lo mismo
+
+```ruby
+while cuenta < 100
+  cuenta += 1
+end
+```
+
+```ruby
+
+```
+
+#### Idioma Ruby ####
+
+Algunas expresiones _poco convencionales_
+
+```ruby
+arreglo.empty?      # También a.empty!
+a || b              # El primer valor != nil o false
+contador ||= 0      # Como contador = contador || 0
+precio *= descuento # Como precio = precio * descuento
+```
+
+<div class="page-header">
+  <h3 class="section-anchor" id="migraciones">Las migraciones</h3>
+</div>
+
+Contienen la _historia_ y la *evolución* de la base de datos
+
+Son una forma cómoda de modificar nuestro esquema de datos
+
+#### Un ejemplo ####
+
+
+```ruby
+class CreatePersonas < ActiveRecord::Migration
+  def change
+    create_table :personas do |t|
+      t.string :nombre
+      t.string :apellido
+
+      t.timestamps
+    end
+  end
+end
+```
+
+#### Consideraciones ####
+
+- Residen en <code>db/migrate</code>
+- Tienen un prefijo de orden
+- Sólo utilizar para **manipular** estructuras (Para crear entidades utilizar <kbd>rake db:seed</kbd>)
+
+#### A los comandos ####
+
+```console
+$ rails g migration add_correo_to_personas correo
+```
+
+Genera en <code>db/migrate/XXXX\_add\_correo\_to\_personas.rb</code>
+
+```ruby
+class AddCorreoToPersonas < ActiveRecord::Migration
+  def change
+    add_column :personas, :correo, :string
+  end
+end
+```
+
+#### A "migrar" ####
+
+- <kbd>rake db:migrate</kbd> ejecuta las migraciones pendientes
+- <kbd>rake db:rollback</kbd> deshace la última migración
+- <kbd>rake db:migrate:redo</kbd> rollback + migrate
+
+Podemos usar <kbd>STEP=2</kbd> o <kbd>VERSION=XXX</kbd> para avanzar o retroceder a un punto específico

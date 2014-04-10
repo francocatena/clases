@@ -17,13 +17,11 @@
       <ul class="nav navbar-nav">
         {% assign post_urls = site.posts | map: 'url' %}
         {% if post_urls contains page.url %}
-        <li class="dropdown active">
-        {% else %}
-        <li class="dropdown">
+        <li class="dropdown active"> {% else %} <li class="dropdown">
         {% endif %}
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Clases <b class="caret"></b></a>
           <ul class="dropdown-menu">
-            {% for post in site.posts %}
+            {% for post in site.posts reversed %}
               {% include menu_item.html url=post.url title=post.title %}
             {% endfor %}
           </ul>

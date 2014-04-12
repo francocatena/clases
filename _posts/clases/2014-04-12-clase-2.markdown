@@ -4,12 +4,31 @@ title:  Clase 2 . Introducción a Rails
 date:   2014-04-12 16:00:00
 categories: clases
 sections:
+  migracion: 'Mini migración'
   estructura: 'La estructura'
   mvc: 'MVC'
   ruby: 'Ruby'
   migraciones: 'Las migraciones'
 
 ---
+
+<div class="page-header">
+  <h3 class="section-anchor" id="migracion">Mini migración</h3>
+</div>
+
+Para actualizar Rails hay que editar el archivo <code>Gemfile</code> y reemplazar la línea:
+
+```ruby
+gem 'rails', '4.1.0.rc2'
+```
+
+Por
+
+```ruby
+gem 'rails', '4.1.0'
+```
+
+Y luego ejecutar <kbd>bundle update</kbd>
 
 <div class="page-header">
   <h3 class="section-anchor" id="estructura">La estructura</h3>

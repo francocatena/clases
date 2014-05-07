@@ -51,7 +51,7 @@ $ echo 'eval "$(rbenv init -)"' >> ~/.bashrc
         </p>
 
         {% highlight console %}
-$ rbenv install 2.1.1
+$ curl -fsSL https://gist.github.com/mislav/a18b9d7f0dc5b9efc162.txt | rbenv install --patch 2.1.1
 $ rbenv global 2.1.1
 $ echo "gem: --no-ri --no-rdoc" > ~/.gemrc
 $ gem update --system

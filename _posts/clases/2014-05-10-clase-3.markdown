@@ -1,0 +1,464 @@
+---
+layout: post
+title:  Clase 3 . Primeros pasos
+date:   2014-05-10 16:00:00
+categories: clases
+sections:
+  entendiendo_rails: 'Entendiendo Rails'
+  mejorando_el_foro: 'Mejorando el foro'
+  validaciones: 'Validaciones'
+  castellanizando: 'Castellanizando'
+  ruby: 'Ruby'
+
+---
+
+<div class="page-header">
+  <h3 class="section-anchor" id="entendiendo_rails">Entendiendo Rails</h3>
+</div>
+
+#### La secuencia ####
+
+1. Navegador → Servidor web
+2. Servidor web → Rails
+  1. Enrutador (routes) → Despachador
+  2. Despachador (dispatcher) → Controlador
+  3. Controlador → Modelo
+  4. Controlador → Vista
+3. Rails → Servidor web
+4. Servidor web → Navegador
+
+<div class="page-header">
+  <h3 class="section-anchor" id="mejorando_el_foro">Mejorando la agenda</h3>
+</div>
+
+#### Atributos permitidos ####
+
+En <code>controllers/personas_controller.rb</code>
+
+```ruby
+def persona_params
+  params.require(:persona).permit(:nombre, :apellido, :correo)
+end
+```
+
+#### Los controles ####
+
+En <code>views/personas/\_form.html.erb</code> agregar:
+
+```html+erb
+<div class="field">
+  <%= f.label :correo %><br />
+  <%= f.text_field :correo %>
+</div>
+...
+<div class="actions">
+  <%= f.submit 'Guardar' %>
+</div>
+```
+
+En <code>views/personas/show.html.erb</code>
+
+```html+erb
+<p>
+  <strong>Correo:</strong>
+  <%= mail_to @persona.correo %>
+</p>
+```
+
+En <code>views/personas/index.html.erb</code>
+
+```html+erb
+<tr>
+  <th>Nombre</th>
+  <th>Apellido</th>
+  <th>Correo</th>
+  ...
+</tr>
+<tr>
+  <td><%= persona.nombre %></td>
+  <td><%= persona.apellido %></td>
+  <td><%= persona.correo %></td>
+  ...
+</tr>
+```
+
+<div class="page-header">
+  <h3 class="section-anchor" id="validaciones">Validaciones</h3>
+</div>
+
+#### Ejemplo ####
+
+Que el nombre no esté en blanco
+
+```ruby
+class Persona < ActiveRecord::Base
+  validates :nombre, presence: true
+end
+```
+
+#### Las incluidas ####
+
+```ruby
+validates :condiciones, acceptance: true
+validates :contrasena, confirmation: true
+validates :usuario, exclusion: { in: %w(admin supremo) }
+validates :email, format: { with: /\A\w+@\w+\Z/ }
+validates :edad, inclusion: { in: 0..9 }
+validates :nombre, length: { maximum: 30 }
+validates :edad, numericality: { only_integer: true }
+validates :usuario, presence: true
+validates :usuario, uniqueness: true
+```
+
+#### Personalizadas ####
+
+```ruby
+validates_each :nombre do |record, attr, value|
+  if value.start_with? 'z'
+    record.errors.add attr, 'no debe iniciar con z'
+  end
+end
+```
+
+#### Para machos ####
+
+
+```ruby
+# Lo mismo se puede conseguir con :format
+class CuitValidator < ActiveModel::EachValidator
+  def validate_each record, attribute, value
+    unless value =~ /\A\d{2}-\d{8}-\d\Z/
+      record.errors.add attribute, 'no está bien'
+      # o record.errors.add attribute, :invalid
+    end
+  end
+end
+
+# y ahora funciona
+validates :cuit_o_cuil, cuit: true
+```
+
+<div class="page-header">
+  <h3 class="section-anchor" id="castellanizando">Castellanizando</h3>
+</div>
+
+#### Mensajes de validación ####
+
+En <code>models/persona.rb</code>
+
+```ruby
+class Persona < ActiveRecord::Base
+  validates :nombre, :apellido, presence: {
+    message: 'no puede estar en blanco'
+  }
+end
+```
+
+En <code>controllers/personas_controller.rb</code>
+
+```ruby
+def index
+  @personas = Persona.order 'apellido'
+end
+```
+
+#### Limpiando ####
+
+En <code>views/personas/index.html.erb</code>
+
+
+```html+erb
+<% @personas.each do |persona| %>
+  <tr>
+    <td><%= link_to "#{persona.nombre} #{persona.apellido}", persona %></td>
+    <td><%= link_to 'Editar', edit_persona_path(persona) %></td>
+    <td><%= link_to 'Eliminar', persona, method: :delete, data: { confirm: '¿Está seguro?' } %></td>
+  </tr>
+<% end %>
+```
+
+En <code>views/personas/show.html.erb</code>
+
+```html+erb
+<p id="notice"><%= notice %></p>
+
+<h1>
+  <%= @persona.nombre %> <%= @persona.apellido %>
+</h1>
+
+<p>
+  <strong>Correo:</strong>
+  <%= mail_to @persona.correo %>
+</p>
+
+<%= link_to 'Editar', edit_persona_path(@persona) %> |
+<%= link_to 'Volver', personas_path %>
+```
+
+#### Los mensajes ####
+
+En <code>controllers/personas_controller.rb</code>
+
+
+```ruby
+# En create
+format.html { redirect_to @persona, notice: 'Persona creada' }
+# En update
+format.html { redirect_to @persona, notice: 'Persona actualizada' }
+```
+
+<div class="page-header">
+  <h3 class="section-anchor" id="ruby">Ruby</h3>
+</div>
+
+#### Bloques ####
+
+```ruby
+cualquier_metodo { puts '¿Bloques?' } # en una línea
+
+cualquier_metodo do                   # Cuando hay más
+  club.inscribir persona              # de una línea
+  persona.socializar # ajj            # generalmente
+end                                   # se usa do / end
+```
+
+Usando bloques
+
+```ruby
+5.times { puts 'bloque sin variables' }
+```
+
+Con variables
+
+```ruby
+# Creamos el array
+animales = %w(gato perro canario jerbo)
+# Iteramos
+animales.each { |animal| puts animal }
+```
+
+Iteradores <span class="text-muted small">con retorno</span>
+
+```ruby
+cuadrados = [1, 2, 3].collect { |n| n ** 2 }
+# O lo mismo
+cuadrados = [1, 2, 3].collect do |n|
+  n ** 2
+end
+# cuadrados = [1, 4, 9]
+```
+
+Con argumentos
+
+```ruby
+def prueba
+  yield 5
+end
+
+prueba { |x| puts "Me pasaron #{x}" }
+```
+
+Más completo
+
+```ruby
+def prueba(x)
+  yield x + 1
+end
+
+prueba(5) { |x| puts "5 + 1 es #{x}" }
+```
+
+Algo más _útil_
+
+```ruby
+class Numeric
+  def hasta(limite)
+    x = self
+
+    while x <= limite
+      yield x
+      x += 1
+    end
+  end
+end
+```
+
+Entonces ahora podemos hacer
+
+```ruby
+5.hasta(7) { |n| puts n }
+# O bien
+5.hasta(7) do |n|
+  puts n
+end
+```
+
+Mucho más bonito que un <code>for</code>...
+
+#### Con <code>block_given?</code> ####
+
+```ruby
+class Numeric
+  def hasta(limite)
+    x, r = self, []
+
+    while x <= limite
+      yield x if block_given?
+      r << x
+      x += 1
+    end
+    r
+  end
+end
+```
+
+#### Más bloques ####
+
+Para escribir
+
+```ruby
+File.open('archivo.txt', 'w') do |file|
+  file << 'prueba'
+end
+```
+
+Y para leer
+
+```ruby
+File.open('archivo.txt', 'r') do |file|
+  file.each_line { |l| puts l }
+end
+```
+
+#### Closures ####
+
+```ruby
+def prueba
+  yield 1
+end
+
+y = 2
+prueba { |x| puts "x = #{x}, y = #{y}" }
+```
+
+#### Excepciones ####
+
+```ruby
+begin
+  boom!
+rescue
+  puts 'Parece que boom! no existe...'
+else
+  puts 'Sin problemas'
+ensure
+  puts 'Pase lo que pase'
+end
+```
+
+#### Clases ####
+
+```ruby
+class Punto
+  attr_accessor :x, :y
+
+  def initialize(x = 0, y = 0)
+    @x, @y = x, y
+  end
+
+  def to_s
+    "(#@x, #@y)"
+  end
+
+  def +(otro)
+    Punto.new(@x + otro.x, @y + otro.y)
+  end
+
+  def -@
+    Punto.new(-@x, -@y)
+  end
+
+  def *(escalar)
+    Punto.new(@x * escalar, @y * escalar)
+  end
+
+  # Con esto funciona 2 * Punto.new(1, 2)
+  def coerce(otro)
+    [self, otro]
+  end
+end
+```
+
+#### Subclases ####
+
+```ruby
+class Punto3D < Punto
+  attr_accesor :z
+
+  def initialize(x = 0, y = 0, z = 0)
+    super(x, y)
+    @z = z
+  end
+
+  def to_s
+    "(#@x, #@y, #@z)"
+  end
+end
+```
+
+#### Restricciones ####
+
+```ruby
+class Ejemplo
+  def m1      # Acceso público
+  end
+
+  protected
+
+  def m2      # Acceso protegido
+  end
+
+  private
+
+  def m3      # Acceso privado
+  end
+end
+```
+
+#### Módulos ####
+
+**No** pueden tener instancias
+
+```ruby
+module Comparable
+  def es_igual_a?(otro)
+    self == otro
+  end
+
+  def es_distinto_de?(otro)
+    !es_igual_a?(otro)
+  end
+end
+```
+
+Para incluirlos
+
+```ruby
+class Punto
+  include Comparable
+
+  def ==(otro)
+    @x == otro.x && @y == otro.y
+  end
+end
+
+# Ahora podemos usar p.es_igual_a?(otro) y
+# p.es_distinto_de?(otro)
+```
+
+#### Módulos útiles ####
+
+Muchos agregan funcionalidad _gratis_
+
+- Enumerable <span class="text-muted small">(sólo implementando <code>each</code>)</span>
+- Comparable <span class="text-muted small">(sólo implementando <code><=></code>)</span>
+- Math <span class="text-muted small">(funciones trigonométricas)</span>

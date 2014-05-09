@@ -1,6 +1,8 @@
 name: Taller de Ruby
 markdown: redcarpet
-pygments: true
+highlighter: pygments
 permalink: pretty
 redcarpet:
   extensions: [autolink, strikethrough, tables]
+gems:
+  - jekyll-sitemap

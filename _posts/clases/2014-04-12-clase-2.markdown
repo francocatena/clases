@@ -317,7 +317,7 @@ end
 ```
 
 ```ruby
-
+cuenta += 1 while cuenta < 100
 ```
 
 #### Idioma Ruby ####

@@ -1,8 +1,19 @@
 name: Taller de Ruby
-markdown: redcarpet
+markdown: kramdown
 highlighter: pygments
 permalink: pretty
+kramdown:
+  coderay_css: class
+  coderay_line_numbers: nil
+  input: GFM
 redcarpet:
   extensions: [autolink, strikethrough, tables]
 gems:
   - jekyll-sitemap
+defaults:
+  -
+    scope:
+      path: ''
+      type: 'post'
+    values:
+      layout: 'post'

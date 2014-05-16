@@ -1,5 +1,5 @@
 name: Taller de Ruby
-markdown: kramdown
+markdown: redcarpet
 highlighter: pygments
 permalink: pretty
 kramdown:

@@ -16,7 +16,7 @@ sections:
   <h3 class="section-anchor" id="migracion">Mini migración</h3>
 </div>
 
-Para actualizar Rails hay que editar el archivo <code>Gemfile</code> y reemplazar la línea:
+Para actualizar Rails hay que editar el archivo `Gemfile` y reemplazar la línea:
 
 ```ruby
 gem 'rails', '4.1.0.rc2'
@@ -43,14 +43,14 @@ $ ls
 
 #### Los importantes ####
 
-- <code>app</code> modelos, vistas, controladores...
-- <code>db</code> todo sobre la BBDD (WOW)
-- <code>config</code> configuraciones "globales"
-- <code>public</code> contenido estático...
-- <code>test</code> pruebas (sorprendente...)
+- `app` modelos, vistas, controladores...
+- `db` todo sobre la BBDD (WOW)
+- `config` configuraciones "globales"
+- `public` contenido estático...
+- `test` pruebas (sorprendente...)
 
 
-#### El direcrotio <code>app</code> ####
+#### El direcrotio `app` ####
 
 Generalmente "vivimos" acá...
 
@@ -61,21 +61,21 @@ $ ls
 
 #### Dentro de app ####
 
-- <code>models</code> modelos...
-- <code>views</code> vistas...
-- <code>controllers</code> controladores...
-- <code>assets</code> Javascript (o Coffeescript), CSS, imágenes... (¿Uh?)
-- <code>helpers</code> ayudadores... (¿Uh?)
+- `models` modelos...
+- `views` vistas...
+- `controllers` controladores...
+- `assets` Javascript (o Coffeescript), CSS, imágenes... (¿Uh?)
+- `helpers` ayudadores... (¿Uh?)
 
 #### Las 7 acciones ####
 
-- <code>index</code> → listar
-- <code>show</code> → ver
-- <code>new</code> → nuevo
-- <code>create</code> → crear
-- <code>edit</code> → editar
-- <code>update</code> → actualizar
-- <code>destroy</code> → eliminar
+- `index` → listar
+- `show` → ver
+- `new` → nuevo
+- `create` → crear
+- `edit` → editar
+- `update` → actualizar
+- `destroy` → eliminar
 
 #### ¿Nuevo y crear? ####
 
@@ -84,28 +84,28 @@ $ ls
 
 Lo mismo aplica para **editar** (nuevo) y **actualizar** (crear)
 
-#### En <code>views</code> ####
+#### En `views` ####
 
 Tenemos un directorio para cada entidad (sólo si hace falta)
 
-- <code>\_form</code> (fomulario compartido del modelo)
-- <code>edit</code> (para editar)
-- <code>index</code> (para listar)
-- <code>new</code> (para crear)
-- <code>show</code> (para visualizar)
+- `_form` (fomulario compartido del modelo)
+- `edit` (para editar)
+- `index` (para listar)
+- `new` (para crear)
+- `show` (para visualizar)
 
-#### En <code>controllers</code> ####
+#### En `controllers` ####
 
 Tenemos un archivo para cada entidad (sólo si hace falta)
 
-Los nombres se forman con <code>nombre\_plural\_entidad</code> + <code>\_controller.rb</code>
+Los nombres se forman con `nombre_plural_entidad` + `_controller.rb`
 
-#### En <code>models</code> ####
+#### En `models` ####
 
 Tenemos un archivo para cada entidad (A menos que usemos herencia con algo como
 <abbr title="Single Table Inheritance (Herencia de una sola tabla)">STI</abbr>)
 
-Los nombres de los modelos se forman con <code>nombre\_singular\_entidad</code> + <code>.rb</code>
+Los nombres de los modelos se forman con `nombre_singular_entidad` + `.rb`
 
 <div class="page-header">
   <h3 class="section-anchor" id="mvc">MVC</h3>
@@ -239,7 +239,7 @@ texto["Ruby"] = "Rails"    # => "Rails"
 texto                      # => "Que bueno Rails"
 ```
 
-Se puede pensar en "estoy buscando \_\_\_\_\_"
+Se puede pensar en "estoy buscando _____"
 
 #### Definición de métodos ####
 
@@ -253,7 +253,7 @@ end
 puts saludo("Franco")
 ```
 
-No es para tanto, es casi lo mismo que en \_\_\_\_\_
+No es para tanto, es casi lo mismo que en _____
 
 ```ruby
 def saludo(nombre)
@@ -270,10 +270,10 @@ Ahora si ahorré unas teclas...
 
 Se considera falso:
 
-- <code>nil</code>
-- <code>false</code> (WOW)
+- `nil`
+- `false` (WOW)
 
-#### Estructura de <code>if</code> ####
+#### Estructura de `if` ####
 
 ```ruby
 if intentos > 3
@@ -285,7 +285,7 @@ else
 end
 ```
 
-#### Estructura de <code>while</code> ####
+#### Estructura de `while` ####
 
 ```ruby
 while intentos < 3
@@ -357,7 +357,7 @@ end
 
 #### Consideraciones ####
 
-- Residen en <code>db/migrate</code>
+- Residen en `db/migrate`
 - Tienen un prefijo de orden
 - Sólo utilizar para **manipular** estructuras (Para crear entidades utilizar <kbd>rake db:seed</kbd>)
 
@@ -367,7 +367,7 @@ end
 $ rails g migration add_correo_to_personas correo
 ```
 
-Genera en <code>db/migrate/XXXX\_add\_correo\_to\_personas.rb</code>
+Genera en `db/migrate/XXXX_add_correo_to_personas.rb`
 
 ```ruby
 class AddCorreoToPersonas < ActiveRecord::Migration

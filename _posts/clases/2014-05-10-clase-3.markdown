@@ -33,7 +33,7 @@ sections:
 
 #### Atributos permitidos ####
 
-En <code>controllers/personas_controller.rb</code>
+En `controllers/personas_controller.rb`
 
 ```ruby
 def persona_params
@@ -43,7 +43,7 @@ end
 
 #### Los controles ####
 
-En <code>views/personas/\_form.html.erb</code> agregar:
+En `views/personas/_form.html.erb` agregar:
 
 ```html+erb
 <div class="field">
@@ -56,7 +56,7 @@ En <code>views/personas/\_form.html.erb</code> agregar:
 </div>
 ```
 
-En <code>views/personas/show.html.erb</code>
+En `views/personas/show.html.erb`
 
 ```html+erb
 <p>
@@ -65,7 +65,7 @@ En <code>views/personas/show.html.erb</code>
 </p>
 ```
 
-En <code>views/personas/index.html.erb</code>
+En `views/personas/index.html.erb`
 
 ```html+erb
 <tr>
@@ -144,7 +144,7 @@ validates :cuit_o_cuil, cuit: true
 
 #### Mensajes de validación ####
 
-En <code>models/persona.rb</code>
+En `models/persona.rb`
 
 ```ruby
 class Persona < ActiveRecord::Base
@@ -154,7 +154,7 @@ class Persona < ActiveRecord::Base
 end
 ```
 
-En <code>controllers/personas_controller.rb</code>
+En `controllers/personas_controller.rb`
 
 ```ruby
 def index
@@ -164,7 +164,7 @@ end
 
 #### Limpiando ####
 
-En <code>views/personas/index.html.erb</code>
+En `views/personas/index.html.erb`
 
 
 ```html+erb
@@ -177,7 +177,7 @@ En <code>views/personas/index.html.erb</code>
 <% end %>
 ```
 
-En <code>views/personas/show.html.erb</code>
+En `views/personas/show.html.erb`
 
 ```html+erb
 <p id="notice"><%= notice %></p>
@@ -197,7 +197,7 @@ En <code>views/personas/show.html.erb</code>
 
 #### Los mensajes ####
 
-En <code>controllers/personas_controller.rb</code>
+En `controllers/personas_controller.rb`
 
 
 ```ruby
@@ -293,9 +293,9 @@ Entonces ahora podemos hacer
 end
 ```
 
-Mucho más bonito que un <code>for</code>...
+Mucho más bonito que un `for`...
 
-#### Con <code>block_given?</code> ####
+#### Con `block_given?` ####
 
 ```ruby
 class Numeric
@@ -459,6 +459,6 @@ end
 
 Muchos agregan funcionalidad _gratis_
 
-- Enumerable <span class="text-muted small">(sólo implementando <code>each</code>)</span>
-- Comparable <span class="text-muted small">(sólo implementando <code><=></code>)</span>
+- Enumerable <span class="text-muted small">(sólo implementando `each`)</span>
+- Comparable <span class="text-muted small">(sólo implementando `<=>`)</span>
 - Math <span class="text-muted small">(funciones trigonométricas)</span>

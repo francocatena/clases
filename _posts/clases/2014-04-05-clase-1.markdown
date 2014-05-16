@@ -135,8 +135,8 @@ end
 
 Son aplicaciones o librerías **empaquetadas**
 
-- Tienen un nombre - <code>rails</code>
-- Y una versión - <code>4.1.0</code>
+- Tienen un nombre - `rails`
+- Y una versión - `4.1.0`
 
 #### ¿Para qué? ####
 
@@ -148,10 +148,10 @@ En _Rubylandia_ tienen mucha importancia
 
 #### Algunos ejemplos ####
 
-- Ruby on Rails → <code>rails</code>
-- Conexión a BBDD → <code>sqlite3</code>
-- Autenticación → <code>devise</code>
-- Paginación → <code>will_paginate</code>
+- Ruby on Rails → `rails`
+- Conexión a BBDD → `sqlite3`
+- Autenticación → `devise`
+- Paginación → `will_paginate`
 - Y otras 73000 más =)
 
 #### ¿Y Rake? ####
@@ -290,7 +290,7 @@ Cada revisión contiene información sobre su ascendencia
 
 #### Estructura ####
 
-- Repositorio es el directorio <code>.git</code>
+- Repositorio es el directorio `.git`
 - Indice Cambios a incluir en la próxima revisión
 - Directorio de trabajo Es lo que **veo**
 
@@ -312,7 +312,7 @@ $ git help <comando>
 
 #### Configuración ####
 
-Vive en <code>$HOME/.gitconfig</code>
+Vive en `$HOME/.gitconfig`
 
 ```console
 $ git config --global user.name "Franco Catena"
@@ -322,9 +322,9 @@ $ git config --global color.ui auto
 
 #### Operaciones básicas ####
 
-- Inicialización → <code>init</code>
-- Copia → <code>clone</code>
-- Cambio de rama → <code>checkout</code>
+- Inicialización → `init`
+- Copia → `clone`
+- Cambio de rama → `checkout`
 
 #### A trabajar #####
 

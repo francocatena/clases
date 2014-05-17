@@ -1,0 +1,652 @@
+---
+layout: post
+title:  Clase 4 . Las vistas
+date:   2014-05-17 16:00:00
+categories: clases
+sections:
+  formularios: 'Formularios'
+  facilidades_de_rails: 'Facilidades de Rails'
+  controladores: 'Controladores'
+  plantillas_y_vistas: 'Plantillas y vistas'
+  rutas: 'Rutas'
+
+---
+
+<div class="page-header">
+  <h3 class="section-anchor" id="formularios">Formularios</h3>
+</div>
+
+#### El objetivo ####
+
+Permitir que los usuarios se expresen
+
+#### <abbr title="HyperText Markup Language (Lenguaje de Marcado de Hipertexto)">HTML</abbr> <small>basiquísimo</small> ####
+
+```html
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Un título</title>
+  </head>
+  <body>
+    <p>Un primer párrafo</p>
+  </body>
+</html>
+```
+
+#### Opciones ####
+
+Los tradicionales
+
+- `<input>` <span class="text-muted small">Campos de texto y botones</span>
+- `<textarea>` <span class="text-muted small">_Area_ de texto</span>
+- `<select>` <span class="text-muted small">Selección de opciones</span>
+
+#### Tipos de `<input>` ####
+
+```html
+<label>Texto</label>
+<input type="text" value="Prueba"><br>
+
+<label>Casilla de verificación</label>
+<input type="checkbox"><br>
+
+<label>Botón "Normal"</label>
+<input type="button" value="Botón"><br>
+
+<label>Botón "Enviar"</label>
+<input type="submit" value="Enviar"><br>
+
+<label>Campo oculto</label>
+<input type="hidden" value="No estoy"><br>
+```
+
+<div>
+  <a class="btn btn-default btn-xs" data-toggle="collapse" data-parent=".output" href="#ej1-output">
+    Ver
+  </a>
+
+  <div class="collapse" id="ej1-output">
+    <br>
+    <div class="well">
+      <label>Texto</label>
+      <input type="text" value="Prueba"><br>
+
+      <label>Casilla de verificación</label>
+      <input type="checkbox"><br>
+
+      <label>Botón "Normal"</label>
+      <input type="button" value="Botón"><br>
+
+      <label>Botón "Enviar"</label>
+      <input type="submit" value="Enviar"><br>
+
+      <label>Campo oculto</label>
+      <input type="hidden" value="No estoy"><br>
+    </div>
+  </div>
+</div>
+
+#### `<input>` <small>nuevos</small> ####
+
+```html
+<label>Correo</label>
+<input type="email" value="francocatena@gmail.com"><br>
+
+<label>Fecha</label>
+<input type="date" value="2014-05-17"><br>
+
+<label>Rango</label>
+<input type="range" min="0" max="10"><br>
+
+<label>Número</label>
+<input type="number" min="0" max="5"><br>
+
+<label>Color</label>
+<input type="color"><br>
+```
+
+<div>
+  <a class="btn btn-default btn-xs" data-toggle="collapse" data-parent=".output" href="#ej2-output">
+    Ver
+  </a>
+
+  <div class="collapse" id="ej2-output">
+    <br>
+    <div class="well">
+      <label>Correo</label>
+      <input type="email" value="francocatena@gmail.com"><br>
+
+      <label>Fecha</label>
+      <input type="date" value="2012-05-11"><br>
+
+      <label>Rango</label>
+      <input type="range" min="0" max="10"><br>
+
+      <label>Número</label>
+      <input type="number" min="0" max="5"><br>
+
+      <label>Color</label>
+      <input type="color"><br>
+    </div>
+  </div>
+</div>
+
+#### La etiqueta `<form>`####
+
+"Obvio" **requisito** para tener un formulario =)
+
+
+```html
+<form action="/personas" method="post">
+  <!-- TODOS los controles deben estar acá -->
+  <input type="submit" value="Guardar">
+</form>
+```
+
+<div>
+  <a class="btn btn-default btn-xs" data-toggle="collapse" data-parent=".output" href="#ej3-output">
+    Ver
+  </a>
+
+  <div class="collapse" id="ej3-output">
+    <br>
+    <div class="well">
+      <form action="/personas" method="post">
+        <!-- TODOS los controles deben estar acá -->
+        <input type="submit" value="Guardar">
+      </form>
+    </div>
+  </div>
+</div>
+
+#### Curiosidades ####
+
+- Atributo `disabled` <span class="text-muted small">los campos desabilitados NO se envían (Para no permitir editar y si enviar usar `readonly`)</span>
+- Botón `submit` <span class="text-muted small">forma normal de enviar los datos</span>
+- `<input type="text">` <span class="text-muted small">autoenvío con Enter</span>
+- Codificación <span class="text-muted small">es mejor ser explícito (Incluir siempre `<meta charset="utf-8">`)</span>
+
+<div class="page-header">
+  <h3 class="section-anchor" id="facilidades_de_rails">Facilidades de Rails</h3>
+</div>
+
+#### Métodos ####
+
+- `form_for` → crea un formulario
+- `submit` → input tipo enviar
+- `text_field` → Campo de texto
+- `text_area` → Campo de mucho texto
+- `select` → lista de opciones
+- `check_box` → Casilla de verificación
+
+#### Entendiendo `form_for` ####
+
+
+```html+erb
+<%= form_for(@persona) do |f| %>
+  <div class="field">
+    <%= f.label :nombre %><br>
+    <%= f.text_field :nombre %>
+  </div>
+<% end %>
+```
+
+```html
+<!-- Genera (cuando la persona es nueva) -->
+<form action="/personas" method="post">
+  <div class="field">
+    <label for="persona_nombre">Nombre</label><br>
+    <input id="persona_nombre" name="persona[nombre]" type="text" />
+  </div>
+</form>
+```
+
+<div>
+  <a class="btn btn-default btn-xs" data-toggle="collapse" data-parent=".output" href="#ej4-output">
+    Ver
+  </a>
+
+  <div class="collapse" id="ej4-output">
+    <br>
+    <div class="well">
+      <!-- Genera (cuando la persona es nueva) -->
+      <form action="/personas" method="post">
+        <div class="field">
+          <label for="persona_nombre">Nombre</label><br>
+          <input id="persona_nombre" name="persona[nombre]" type="text" />
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<br>
+
+```html
+<!-- Genera (cuando la persona existe) -->
+<form action="/personas/1" method="post">
+  <input name="_method" type="hidden" value="patch" />
+  <div class="field">
+    <label for="persona_nombre">Nombre</label><br>
+    <input id="persona_nombre" name="persona[nombre]" type="text" value="Nombre" />
+  </div>
+</form>
+```
+
+<div>
+  <a class="btn btn-default btn-xs" data-toggle="collapse" data-parent=".output" href="#ej5-output">
+    Ver
+  </a>
+
+  <div class="collapse" id="ej5-output">
+    <br>
+    <div class="well">
+      <!-- Genera (cuando la persona existe) -->
+      <form action="/personas/1" method="post">
+        <input name="_method" type="hidden" value="patch" />
+        <div class="field">
+          <label for="persona__nombre">Nombre</label><br>
+          <input id="persona__nombre" name="persona[nombre]" type="text" value="Nombre" />
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+#### Los nuevos ####
+
+- `email_field` → <span class="text-muted small">crea un campo tipo email</span>
+- `number_field` → <span class="text-muted small">crea un campo tipo number</span>
+- `search_field` → <span class="text-muted small">crea un campo tipo search</span>
+- `telephone_field` → <span class="text-muted small">crea un campo tipo tel</span>
+- `date_field` → <span class="text-muted small">crea un campo tipo date</span>
+- `url_field` → <span class="text-muted small">crea un campo tipo url</span>
+
+#### Algunos _ayudadores_ ####
+
+- `link_to` → <span class="text-muted small">crea un enlace</span>
+- `button_to` → <span class="text-muted small">crea un botón</span>
+- `url_for` → <span class="text-muted small">genera una <abbr title="Uniform Resource Locator (Localizador uniforme de recursos)">URL</abbr> (WOW)</span>
+- `image_tag` → <span class="text-muted small">genera una etiqueta `<img>`</span>
+
+#### _Ayudadores_ para <abbr title="Uniform Resource Locator (Localizador uniforme de recursos)">URL</abbr>s ####
+
+- `personas_path` → <span class="text-muted small">‘/personas’</span>
+- `new_persona_path` → <span class="text-muted small">‘/personas/new’</span>
+- `edit_persona_path` → <span class="text-muted small">‘/personas/1/edit’</span>
+- `persona_path` → <span class="text-muted small">‘/personas/1’</span>
+
+#### Y usando eso... ####
+
+
+```html+erb
+<%= link_to 'Nueva', new_persona_path %>
+<%= link_to 'Ver', persona_path(@persona) %>
+<%= link_to 'Editar', edit_persona_path(@persona) %>
+<%= link_to 'Listado', personas_path %>
+```
+
+
+```html
+<!-- Genera -->
+<a href="/personas/new">Nueva</a>
+<a href="/personas/1">Ver</a>
+<a href="/personas/1/edit">Editar</a>
+<a href="/personas">Listado</a>
+```
+
+<div>
+  <a class="btn btn-default btn-xs" data-toggle="collapse" data-parent=".output" href="#ej6-output">
+    Ver
+  </a>
+
+  <div class="collapse" id="ej6-output">
+    <br>
+    <div class="well">
+      <!-- Genera -->
+      <a href="/personas/new">Nueva</a>
+      <a href="/personas/1">Ver</a>
+      <a href="/personas/1/edit">Editar</a>
+      <a href="/personas">Listado</a>
+    </div>
+  </div>
+</div>
+
+<div class="page-header">
+  <h3 class="section-anchor" id="controladores">Controladores</h3>
+</div>
+
+#### ¿Qué hace? ####
+
+Un controlador le da sentido a una petición, respondiendo con la salida apropiada
+
+#### Métodos y acciones ####
+
+Rails crea instancias de controladores y ejecuta acciones según la petición
+
+```ruby
+class PersonasController < ApplicationController
+  def new
+    # Código de la acción
+  end
+end
+```
+
+#### Un ejemplo ####
+
+Cuando pedimos `/personas/new` Rails:
+
+- Crea `PersonasController`
+- Ejecuta el método `new`
+- Dibuja `new.html.erb` <span class="text-muted small">(Excepto que le especifiquemos otra cosa)</span>
+
+#### Variables ####
+
+**Todas** las variables **de instancia** están disponibles en la vista
+
+```ruby
+# controllers/personas_controller.rb
+def new
+  @persona = Persona.new
+end
+```
+
+```html+erb
+<!-- views/personas/new.html.rb -->
+<h1><%= @persona.nombre %></h1>
+```
+
+#### Parámetros ####
+
+Pidiendo GET `/personas?estado=triste`
+
+```ruby
+def index
+  if params[:estado] == 'triste'
+    @personas = Persona.triste
+  else
+    @personas = Persona.alegre
+  end
+end
+```
+
+Y desde el formulario
+
+```ruby
+def create
+  @persona = Persona.new(persona_params)
+
+  if @persona.save
+    redirect_to @persona
+  else
+    # Sin esto buscaría dibujar 'create.html.erb'
+    render action: 'new'
+  end
+end
+
+private
+
+  def persona_params
+    params.require(:persona).permit(:nombre, :apellido, :correo)
+  end
+```
+
+Y algunas nomenclaturas _especiales_
+
+Pidiendo GET `/personas?ids[]=1&ids[]=2`
+
+```ruby
+def index
+  # params[:ids] contiene [1, 2]
+  @personas = Persona.find(params[:ids])
+end
+```
+
+En formularios
+
+
+```html
+<form action="/personas" method="post">
+  <input type="text" name="persona[nombre]" value="Juan" />
+  <input type="text" name="persona[apellido]" value="Perez" />
+</form>
+```
+
+<div>
+  <a class="btn btn-default btn-xs" data-toggle="collapse" data-parent=".output" href="#ej7-output">
+    Ver
+  </a>
+
+  <div class="collapse" id="ej7-output">
+    <br>
+    <div class="well">
+      <form action="/personas" method="post">
+        <input type="text" name="persona[nombre]" value="Juan" />
+        <input type="text" name="persona[apellido]" value="Perez" />
+      </form>
+    </div>
+  </div>
+</div>
+
+
+```ruby
+def create
+  Persona.new(persona_params)
+end
+
+private
+
+  def persona_params
+    # params contiene un *hash*
+    # { persona: { nombre: 'Juan', apellido: 'Perez' } }
+    params.require(:persona).permit(:nombre, :apellido)
+  end
+```
+
+<div class="page-header">
+  <h3 class="section-anchor" id="plantillas_y_vistas">Plantillas y vistas</h3>
+</div>
+
+#### Las opciones... ####
+
+3 métodos importantes
+
+- render
+- redirect_to
+- head
+
+#### La convención ####
+
+Si no especificamos nada, se ejecuta `render` con el nombre de la acción
+
+#### El ejemplo ####
+
+
+```ruby
+class PersonasController < ApplicationController
+  def index
+    # render 'index' implícito
+  end
+end
+```
+
+
+```html
+<!-- views/personas/index.html.erb -->
+<h1>Implementar algo mejor =)</h1>
+```
+
+<div>
+  <a class="btn btn-default btn-xs" data-toggle="collapse" data-parent=".output" href="#ej8-output">
+    Ver
+  </a>
+
+  <div class="collapse" id="ej8-output">
+    <br>
+    <div class="well">
+      <!-- views/personas/index.html.erb -->
+      <h1>Implementar algo mejor =)</h1>
+    </div>
+  </div>
+</div>
+
+#### Usando `render` ####
+
+```ruby
+def nada
+  render nothing: true
+end
+
+def update
+  if @persona.update(persona_params)
+    redirect_to(@persona)
+  else
+    render 'edit' # Para no tener un update.html.erb
+  end
+end
+```
+
+#### <abbr title="JavaScript Object Notation">JSON</abbr> ####
+
+<abbr title="JavaScript Object Notation">JSON</abbr> es un formato de datos usado principalmente en JavaScript
+
+```ruby
+# En views/personas/index.json.jbuilder
+json.array!(@personas) do |persona|
+  json.extract! persona, :nombre, :apellido, :correo
+  json.url persona_url(persona, format: :json)
+end
+```
+
+#### Plantillas ####
+
+Viven en `views/layouts` y se carga
+
+- El especificado explícitamente o...
+- Por el nombre del controlador o...
+- `application.html.erb`
+
+#### Redireccionando ####
+
+```ruby
+def show
+  @persona = Persona.find_by(id: params[:id])
+
+  if @persona.nil?
+    redirect_to personas_url
+    # redirect_to action: :index
+  end
+end
+```
+
+#### Mini plantilla ####
+
+```html+erb
+<!doctype html>
+<html>
+  <head>
+  </head>
+
+  <body>
+    <%= render 'compartido/menu' %>
+    <%= yield %>
+  </body>
+</html>
+```
+
+<div class="page-header">
+  <h3 class="section-anchor" id="rutas">Rutas</h3>
+</div>
+
+El enrutamiento determina que acción ejecutar para cada <abbr title="Uniform Resource Locator (Localizador Uniforme de Recursos)">URL</abbr>
+
+#### El hogar ####
+
+Todas las reglas de enrutamiento viven en `config/routes.rb`
+
+#### Ejemplo ####
+
+Pidiendo GET `/personas/3`
+
+
+```ruby
+# Y en config/routes.rb
+get '/personas/:id', to: 'personas#show'
+```
+
+Me lleva a la acción `show` del controlador `personas` con `params[:id] = 3`
+
+#### Recursos ####
+
+Generalmente declaramos operaciones <abbr title="Create, Read, Update and Delete (Crear, Obtener, Actualizar y Borrar)">CRUD</abbr>
+
+```ruby
+resources :personas
+```
+
+<table class="table table-hover table-condensed table-bordered">
+  <thead>
+    <tr>
+      <th>“Verbo” <span class="caps">HTTP</span></th>
+      <th>Ruta</th>
+      <th>Acción</th>
+    </tr>
+  </thead>
+	<tbody>
+    <tr>
+      <td>GET</td>
+      <td><code>/personas</code></td>
+      <td><code>index</code></td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td><code>/personas/new</code></td>
+      <td><code>new</code></td>
+    </tr>
+    <tr>
+      <td>POST</td>
+      <td><code>/personas</code></td>
+      <td><code>create</code></td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td><code>/personas/:id</code></td>
+      <td><code>show</code></td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td><code>/personas/:id/edit</code></td>
+      <td><code>edit</code></td>
+    </tr>
+    <tr>
+      <td>PUT / PATCH</td>
+      <td><code>/personas/:id</code></td>
+      <td><code>update</code></td>
+    </tr>
+    <tr>
+      <td>DELETE</td>
+      <td><code>/personas/:id</code></td>
+      <td><code>destroy</code></td>
+    </tr>
+  </tbody>
+</table>
+
+#### _Visualización_ ####
+
+Podemos consultar nuestras rutas en http://localhost:3000/rails/info/routes (<kbd>rake routes</kbd> también es un amigo)
+
+O mejor algo gráfico:
+
+```console
+$ sudo apt-get install graphviz
+```
+
+Y en una consola de Rails (<kbd>rails c</kbd>)
+
+```ruby
+File.open('routes.html', 'w') do |f|
+  f << Rails.application.routes.router.visualizer
+end
+```

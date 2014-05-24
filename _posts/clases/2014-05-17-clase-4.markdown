@@ -453,9 +453,9 @@ private
 
 3 métodos importantes
 
-- render
-- redirect_to
-- head
+- `render`
+- `redirect_to`
+- `head`
 
 #### La convención ####
 
@@ -496,7 +496,7 @@ end
 
 ```ruby
 def nada
-  render nothing: true
+  render inline: ''
 end
 
 def update

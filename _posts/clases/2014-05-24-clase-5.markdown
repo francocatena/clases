@@ -1,0 +1,484 @@
+---
+layout: post
+title:  Clase 5 . Las consultas
+date:   2014-05-24 16:00:00
+categories: clases
+sections:
+  adaptadores: 'Adaptadores'
+  consultas: 'Consultas'
+  relaciones: 'Relaciones'
+  optimizaciones: 'Optimizaciones'
+  a_trabajar: 'A trabajar...'
+
+---
+
+<div class="page-header">
+  <h3 class="section-anchor" id="adaptadores">Adaptadores</h3>
+</div>
+
+#### Adaptadores _incluidos_ ####
+
+- PostgreSQL
+- SQLite
+- MySQL
+
+#### Adaptadores _alternativos_ ####
+
+- Firebird
+- Oracle
+- SQLServer
+- Sybase
+- OpenBase
+- FrontBase
+
+<div class="page-header">
+  <h3 class="section-anchor" id="consultas">Consultas</h3>
+</div>
+
+#### Recuperando datos... ####
+
+_Todo_ (o casi) es una relación de tipo `ActiveRecord::Relation`
+
+#### Operaciones ####
+
+- `where`
+- `order`
+- `limit`
+- `joins`
+- `includes`
+
+#### Buscando _un_ objeto ####
+
+
+```ruby
+# Búsquedas simples
+Persona.find(103)  # Persona con ID 103
+Persona.take       # Una persona
+Persona.first      # La "primer" persona
+Persona.last       # La "última" persona
+```
+
+```sql
+-- Equivalente
+SELECT * FROM personas WHERE id = 103;
+SELECT * FROM personas LIMIT 1;
+SELECT * FROM personas ORDER BY id ASC LIMIT 1;
+SELECT * FROM personas ORDER BY id DESC LIMIT 1;
+```
+
+#### Buscando más... ####
+
+```ruby
+# Búsquedas múltiples
+Persona.find(4, 9)                  # Con ID 4 o 9
+Persona.where('nombre = "Juan"')    # Peligrosa
+Persona.where('nombre = ?', 'Juan') # Mejor
+Persona.where(nombre: 'Juan')       # Hermosa
+```
+
+```sql
+-- Equivalencias
+SELECT * FROM personas WHERE (id IN (4,9))
+SELECT * FROM personas WHERE (nombre = 'Juan')
+SELECT * FROM personas WHERE (nombre = 'Juan')
+SELECT * FROM personas WHERE (nombre = 'Juan')
+```
+
+#### Parámetros con nombre ####
+
+```ruby
+Persona.where(
+  'created_at >= :inicio AND created_at <= :fin',
+  inicio: 1.day.ago, fin: Time.now
+)
+```
+
+```sql
+SELECT * FROM personas WHERE (
+  created_at >= '2013-06-07 16:01:36' AND
+  created_at <= '2013-06-08 16:01:36'
+)
+```
+
+#### Rangos ####
+
+```ruby
+inicio = 1.day.ago
+fin = 10.minutes.from_now
+
+Persona.where(created_at: inicio..fin)
+```
+
+```sql
+SELECT * FROM personas WHERE (
+  created_at BETWEEN '2013-06-07 16:01:03' AND
+                     '2013-06-08 16:11:03'
+)
+```
+
+#### Pongamos límites ####
+
+```ruby
+Persona.limit(5)
+Persona.limit(5).offset(10)
+```
+
+```sql
+SELECT * FROM personas LIMIT 5
+SELECT * FROM personas LIMIT 5,10
+```
+
+#### Juntemos ####
+
+```ruby
+Persona.includes(:eventos).where(
+  eventos: { descripcion: 'Ir al curso' }
+).references(:eventos)
+```
+
+```sql
+SELECT personas.*
+  FROM personas
+  LEFT OUTER JOIN eventos ON personas.evento_id = eventos.id
+  WHERE eventos.descripcion = 'Ir al curso';
+```
+
+#### Ordenemos ####
+
+```ruby
+Persona.order(created_at: :desc)
+```
+
+```sql
+SELECT * FROM personas ORDER BY created_at DESC
+```
+
+#### Contemos ####
+
+```ruby
+Persona.count
+```
+
+```sql
+SELECT COUNT(*) FROM personas
+```
+
+#### Todo junto ####
+
+```ruby
+Persona.includes(:eventos).where(
+  eventos: { descripcion: 'Ir al curso' }
+).order(created_at: :desc).limit(5)
+```
+
+```sql
+SELECT personas.*
+  FROM personas
+  LEFT OUTER JOIN eventos ON personas.evento_id = eventos.id
+  WHERE eventos.descripcion = 'Ir al curso'
+  ORDER BY created_at DESC LIMIT 5;
+```
+
+#### Procesar _mucho_ ####
+
+Divide y vencerás...
+
+```ruby
+Persona.find_each do |persona|
+  Notificar.noticias_semanales(persona).deliver
+end
+```
+
+Busca en grupos de 1000, se cambia con la opción `:batch_size`
+
+#### Por partes <small>dijo Jack...</small> ####
+
+Podemos también procesar por lotes...
+
+
+```ruby
+Persona.find_in_batches do |personas|
+  pdf.agregar_personas(personas)
+end
+```
+
+#### Mini magia ####
+
+```ruby
+Evento.find_by(descripcion: 'Ir al curso')
+Evento.where(descripcion: 'Visitar la nona').first_or_initialize
+Evento.where(descripcion: 'Visitar la nona').first_or_create
+```
+
+```sql
+SELECT * FROM eventos WHERE (descripcion = 'Ir al curso') LIMIT 1;
+SELECT * FROM eventos WHERE (descripcion = 'Visitar la nona') LIMIT 1;
+-- Y en el find_or_create_by
+SELECT * FROM eventos WHERE (descripcion = 'Visitar la nona') LIMIT 1;
+-- Si no existe
+INSERT INTO eventos ("created_at", "descripcion", "updated_at") VALUES (?, ?, ?);
+```
+
+<div class="page-header">
+  <h3 class="section-anchor" id="relaciones">Relaciones</h3>
+</div>
+
+#### Relaciones `1-1` ####
+
+Las más _simples_, el **problema** es determinar el **dueño** (o quien tiene la referencia)
+
+Ejemplo: Persona (1) → Domicilio (1)
+
+Se manejan con `belongs_to` y `has_one`
+
+```ruby
+class Persona
+  # En la tabla personas no hay referencias (la tiene el domicilio)
+  has_one :domicilio
+end
+
+class Domicilio
+  # En la tabla domicilios hay un campo persona_id
+  belongs_to :persona
+end
+```
+
+##### Tabla `1-1` (`domicilios`) #####
+
+
+
+<table class="table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>direccion</th>
+      <th>persona_id</th>
+    </tr>
+  </thead>
+	<tbody>
+    <tr>
+      <td>1</td>
+      <td>San Martín 333</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Beltrán 222</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>San Juan 111</td>
+      <td>7</td>
+    </tr>
+  </tbody>
+</table>
+
+#### Relaciones `1-N` ####
+
+La referencia **siempre** la tiene "el N". Difíciles de manejar _bien_ en las vistas
+
+Ejemplo: Persona (1) → Teléfonos (N)
+
+Se manejan con `belongs_to` y `has_many`
+
+```ruby
+class Persona
+  # En la tabla personas no hay referencias
+  has_many :telefonos
+end
+
+class Telefono
+  # En la tabla telefonos hay un campo persona_id
+  belongs_to :persona
+end
+```
+
+##### Tabla `1-N` (`telefonos`) #####
+
+<table class="table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>telefono</th>
+      <th>persona_id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>555-5555</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>777-7777</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>0800-888-8888</td>
+      <td>7</td>
+    </tr>
+  </tbody>
+</table>
+
+#### Relaciones `N-N` ####
+
+Se manejan con una tabla asociativa (o una relación intermedia)
+
+Ejemplo: Documentos (N) → Etiquetas (N)
+
+Se usa `has_and_belongs_to_many` en ambos extremos
+
+Nadie **tiene** referencia de nadie, se mantienen en la _tabla asociativa_
+
+```ruby
+# Debe existir la tabla documentos_etiquetas
+class Documento
+  has_and_belongs_to_many :etiquetas
+end
+
+class Etiqueta
+  has_and_belongs_to_many :documentos
+end
+```
+
+##### Tabla `documentos_etiquetas` #####
+
+<table class="table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>documento_id</th>
+      <th>etiqueta_id</th>
+    </tr>
+  </thead>
+	<tbody>
+    <tr>
+      <td>17</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>24</td>
+    </tr>
+  </tbody>
+</table>
+
+#### `N-N` _Especiales_ ####
+
+Se pueden crear asociaciones `N-N` usando una relación _puente_
+
+##### Ejemplo `N-N` <small>especial...</small> #####
+
+```ruby
+class Factura
+  belongs_to :persona
+  has_many :articulos
+end
+
+class Articulo
+  belongs_to :factura
+end
+
+class Persona
+  has_many :facturas
+  # Traducido: tiene muchos artículos _a través de_ facturas
+  has_many :articulos, through: :facturas
+end
+```
+
+##### La _reflexiva_ #####
+
+```ruby
+class Persona < ActiveRecord::Base
+  has_many :hijos, class_name: 'Persona', foreign_key: 'padre_id'
+  belongs_to :padre, class_name: 'Persona'
+end
+
+# Y ahora podemos preguntar...
+persona.hijos.empty?   # Muy joven o estéril =)
+persona.padre.present? # ¿Es un "hijo de su madre"?
+persona.padre.padre    # El abuelo
+```
+
+#### Algunas opciones... ####
+
+- `dependent` <span class="text-muted small">¿que hago cuando borren? Ejemplo: `:destroy`</span>
+- `through` <span class="text-muted small">para indicar que la referencia la tiene otra relación</span>
+
+#### Algunos ejemplos... ####
+
+```ruby
+# Ordenado explícitamente por fecha de creación
+has_many :comentarios, -> { order :fecha_creacion }
+# Cuando cargue comentarios que también cargue al autor
+has_many :comentarios, -> { includes :autor }
+# Cuando _destruya_ el "padre" borrar los relacionados
+has_many :telefonos, dependent: :destroy
+# No quiero que modifiquen etiquetas usando la relación
+has_many :etiquetas, -> { readonly }
+```
+
+#### Algunos usos ####
+
+```ruby
+# ¿Tiene algún teléfono?
+persona.telefonos.empty?
+# Agregar un nuevo teléfono
+persona.telefonos.create(numero: '555-5555')
+# Otra forma de agregar
+persona.telefonos << Telefono.new(numero: '555-5555')
+# ¿Cuantos hay?
+persona.telefonos.count
+# Restringidos
+persona.articulos.where('precio > ?', 100)
+```
+
+<div class="page-header">
+  <h3 class="section-anchor" id="optimizaciones">Optimizaciones</h3>
+</div>
+
+#### Índices ####
+
+Como regla _general_ deberíamos tener al menos *uno* por cada clave foránea <span class="text-muted small">(columna en una tabla que refiere a una columna en otra tabla)</span>
+
+#### En las migraciones ####
+
+```ruby
+class CreateDomicilio < ActiveRecord::Migration
+  def change
+    create_table :domicilios do |t|
+      t.string :calle
+      t.integer :numero
+      # Esto es lo "importante"
+      t.references :persona, index: true
+    end
+  end
+end
+```
+
+#### Y en otros campos... ####
+
+**Revisar** si es necesario agregar un índice en alguna columna de orden o condición. Por ejemplo, si quisiéramos agregar un índice al campo `correo` de la tabla `personas`
+
+```ruby
+class AgregarIndiceCorreoEnPersonas < ActiveRecord::Migration
+  def change
+    add_index :personas, :correo
+  end
+end
+```
+
+<div class="page-header">
+  <h3 class="section-anchor" id="a_trabajar">A trabajar...</h3>
+</div>
+
+#### Cortito... ####
+
+Crear un filtro por nombre en el `index` de personas
+

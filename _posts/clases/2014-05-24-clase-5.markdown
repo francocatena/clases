@@ -168,7 +168,7 @@ SELECT COUNT(*) FROM personas
 ```ruby
 Persona.includes(:eventos).where(
   eventos: { descripcion: 'Ir al curso' }
-).order(created_at: :desc).limit(5)
+).references(:eventos).order(created_at: :desc).limit(5)
 ```
 
 ```sql

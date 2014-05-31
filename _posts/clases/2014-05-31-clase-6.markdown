@@ -1,0 +1,395 @@
+---
+layout: post
+title:  Clase 6 . La autorización
+date:   2014-05-31 16:00:00
+categories: clases
+sections:
+  ganchos: 'Ganchos'
+  el_estado: 'El estado'
+  autenticacion: 'Autenticación'
+  autenticacion_web: 'Autenticación web'
+  a_trabajar: 'A trabajar...'
+
+---
+
+<div class="page-header">
+  <h3 class="section-anchor" id="ganchos">Ganchos</h3>
+</div>
+
+#### Colgando... ####
+
+Los ganchos (o _callbacks_) son **métodos** invocados en distintos momentos del ciclo de vida de los objetos
+
+#### En `ActiveRecord` ####
+
+Podemos incluir código en estos momentos:
+
+- Cuando _creamos_
+- Cuando _guardamos_
+- Cuando _actualizamos_
+- Cuando _eliminamos_
+- Cuando _validamos_
+
+#### El ejemplo ####
+
+```ruby
+class Usuario < ActiveRecord::Base
+  before_validation :asegurar_nombre_de_usuario
+
+  def asegurar_nombre_de_usuario
+    self.usuario ||= correo
+  end
+end
+```
+
+#### Las opciones... ####
+
+- `before_validation` <span class="text-muted small">y `after_validation`</span>
+- `before_create` <span class="text-muted small">y `after_create`</span>
+- `before_update` <span class="text-muted small">y `after_update`</span>
+- `before_save` <span class="text-muted small">y `after_save`</span>
+- `before_destroy` <span class="text-muted small">y `after_destroy`</span>
+
+#### Cancelar _todo_ ####
+
+Hay varias formas de parar la ejecución
+
+- Devolver false en los `before_*`
+- Disparar una excepción en los `before_*`
+- Disparar una excepción en los `after_*` <span class="text-muted small">(La más "correcta" para el caso, es `ActiveRecord::Rollback`)</span>
+
+#### Condiciones ####
+
+Se pueden ejecutar ganchos **condicionales**
+
+```ruby
+# Puede ser :if o :unless
+after_save :enviar_correo if: :correo_valido?
+
+def enviar_correo
+  # Código para enviar el correo
+end
+
+def correo_valido?
+  # Código para validar el correo
+end
+```
+
+#### Separados ####
+
+Si pretendemos **reutilizar**
+
+```ruby
+class Archivo < ActiveRecord::Base
+  after_destroy GanchosArchivo.new
+end
+
+class GanchosArchivo
+  def after_destroy(archivo)
+    File.delete(archivo.ruta) if File.exists?(archivo.ruta)
+  end
+end
+```
+
+#### _Filtros_ ####
+
+En `ActionController` también hay _ganchos_...
+
+```ruby
+class ApplicationController < ActionController::Base
+  before_action :requerir_usuario
+
+  private
+
+    def requerir_usuario
+      redirect_to ingreso_url unless tiene_sesion?
+    end
+end
+```
+
+Si un filtro `before_*` llama a `redirect` o `render` la acción **no** se ejecuta (y tampoco los filtros siguientes)
+
+#### Saltando filtros ####
+
+Para saltar un filtro en determinadas acciones se usa `skip_before_action`
+
+```ruby
+class IngresoController < ApplicationController
+  skip_before_action :requerir_usuario, only: [:new, :create]
+end
+```
+
+#### Envolviendo ####
+
+```ruby
+class CambiosController < ApplicationController
+  around_action :envolver_en_transaccion, only: :show
+
+  private
+
+    def envolver_en_transaccion
+      ActiveRecord::Base.transaction do
+        begin
+          yield
+        ensure
+          raise ActiveRecord::Rollback
+        end
+      end
+    end
+end
+```
+
+<div class="page-header">
+  <h3 class="section-anchor" id="el_estado">El estado</h3>
+</div>
+
+#### Sesiones ####
+
+Cada usuario tiene **un** objeto sesión que puede almacenar datos **entre** peticiones
+
+```ruby
+class CarritoController < ApplicationController
+  def agregar
+    articulo = Articulo.find(params[:articulo_id])
+
+    session[:carrito] ||= {}
+    session[:carrito][articulo.id] ||= 0
+    session[:carrito][articulo.id] += params[:cantidad].to_i
+  end
+end
+```
+
+#### Flash ####
+
+```ruby
+class CarritoController < ApplicationController
+  def terminar_compra
+    session[:carrito] = {}
+    flash[:notice] = 'Muchas gracias por tu compra'
+
+    redirect_to root_url
+    # Alternativa
+    # redirect_to root_url, notice: 'Muchas gracias por tu compra'
+  end
+end
+```
+
+<div class="page-header">
+  <h3 class="section-anchor" id="autenticacion">Autenticación</h3>
+</div>
+
+#### Glosario =) ####
+
+- Autenticación **verificamos** usuario y contraseña
+- Autorización ¿lo dejamos o no?
+
+#### El Vikingo® ####
+
+```ruby
+if usuario == 'admin' && clave == '123'
+  # Usuario y/o contraseña *bien*
+else
+  # Usuario y/o contraseña *mal*
+end
+```
+
+#### Mejorando... ####
+
+- Primer **epifanía**: guardar usuarios y contraseñas en la BBDD
+- Problema: cualquiera (con acceso) puede **ver** las contraseñas
+
+#### Encerando ####
+
+- Segunda **epifanía**: guardar las contraseñas cifradas
+- Problema 1: no usar un _buen_ algoritmo es casi lo mismo que nada
+- Problema 2: ataques por **diccionario**
+
+#### Puliendo ####
+
+- Tercera **epifanía**: guardar (contraseña + _algo raro_) **todo** cifrado
+- Posible problema: mal algoritmo de cifrado
+
+#### Algoritmos ####
+
+Algunos algoritmos de cifrado unidireccional...
+
+- `MD5` viejo, conocido y **roto**
+- `SHA-1` adulto, conocido y **roto** =)
+- `SHA-2` adulto, conocido y **roto**
+- `SHA-3` infante y **desconocido**
+- `BCrypt` <span class="text-muted">(en realidad `Blowfish`)</span> adulto, conocido y **sano** (de momento)
+
+#### Los ejemplos ####
+
+```ruby
+require 'digest/md5'
+md5 = Digest::MD5.hexdigest('prueba')
+puts "MD5: #{md5}"
+# => "c893bad68927b457dbed39460e6afd62"
+
+require 'digest/sha1'
+sha1 = Digest::SHA1.hexdigest('prueba')
+puts "SHA1: #{sha1}"
+# => "711383a59fda05336fd2ccf70c8059d1523eb41a"
+
+require 'digest/sha2'
+sha256 = Digest::SHA256.hexdigest('prueba')
+puts "SHA-256: #{sha256}"
+# => "655e786674d9d3e77bc05ed1de37b4b6bc89f788829f9f3c679e7687b410c89b"
+
+sha384 = Digest::SHA384.hexdigest('prueba')
+puts "SHA-384: #{sha384}"
+# => "873e613b2a00b30219d7121340ef4c49e8b2e6c53ace2e2056ea1b2a833587b16e6339d0677ec56f7c3aa1e2ddaa2243"
+```
+
+#### Y el lento... ####
+
+```ruby
+require 'bcrypt'
+bcrypt = BCrypt::Password.create('prueba', cost: 10)
+puts "BCrypt: #{bcrypt}"
+# $2a$10$cTlM8k3zQR8d7Qf4ioTtwuBJAULP/zsSGkmGaxArhhyWeD4Qk660m
+```
+
+#### El viaje ####
+
+Algo que _suele pasar_: <abbr title="Hypertext Transfer Protocol (Protocolo de Transferencia de Hipertexto)">HTTP</abbr> envía **todo** plano
+
+Cualquiera que vea el tráfico _sabe_ nuestro secreto... **escalofriante**
+
+#### Todo seguro ####
+
+Para _garantizar_ seguridad debemos cifrar **todo** el tráfico.
+
+Para esto se utiliza <abbr title="Hyper Text Transfer Protocol Secure (Protocolo Seguro de Transferencia de Hipertexto)">HTTPS</abbr>
+
+<div class="page-header">
+  <h3 class="section-anchor" id="autenticacion_web">Autenticación web</h3>
+</div>
+
+#### Básico ####
+
+```ruby
+usuario, clave = params[:usuario], params[:clave]
+
+if Usuario.find_by(usuario: usuario, clave: clave)
+  # Usuario y contraseña *bien*
+else
+  # Usuario y/o contraseña *mal*
+end
+```
+
+#### Mejorando ####
+
+```ruby
+usuario = params[:usuario]
+clave = Digest::SHA512.hexdigest(params[:clave])
+
+if Usuario.find_by(usuario: usuario, clave: clave)
+  # Usuario y contraseña *bien*
+else
+  # Usuario y/o contraseña *mal*
+end
+```
+
+#### Con esteroides... ####
+
+```ruby
+# No se puede hacer tan "directo"
+usuario = Usuario.find_by(usuario: params[:usuario])
+clave = BCrypt::Password.new(usuario.clave) if usuario
+
+if usuario && clave == params[:clave]
+  # Usuario y contraseña *bien*
+else
+  # Usuario y/o contraseña *mal*
+end
+```
+
+#### La sesión ####
+
+Tenemos que _recordar_ datos **entre** peticiones
+
+```ruby
+class SesionController < ApplicationController
+  def create
+    if usuario_y_clave_correctos
+      session[:usuario_id] = usuario_autenticado.id
+    end
+  end
+end
+```
+
+#### Cargando ####
+
+```ruby
+# En el padre de todos los controladores
+class ApplicationController < ActionController::Base
+  def usuario_actual
+    @_usuario ||= Usuario.find(session[:usuario_id]) if session[:usuario_id]
+  end
+
+  def requerir_usuario
+    redirect_to ingreso_url unless usuario_actual
+  end
+end
+```
+
+#### Verificando ####
+
+```ruby
+class PersonasController < ApplicationController
+  before_action :requerir_usuario
+end
+```
+
+#### Lo incluido ####
+
+```ruby
+class Usuario < ActiveRecord::Base
+  # En la BBDD: Usuario(nombre:string, password_digest:string)
+  has_secure_password
+end
+
+usuario = Usuario.new(
+  nombre: 'franco',
+  password: '123',
+  password_confirmation: '123'
+)
+
+usuario.save # => true
+usuario.authenticate('123') # => true
+usuario.authenticate('cualquier cosa') # => false
+```
+
+#### Fácil ####
+
+_Todo_ es más fácil con una gema
+
+```ruby
+gem 'devise'
+# O puede ser
+# gem 'authlogic'
+```
+
+#### Comparando ####
+
+_Prefabricado_
+
+- Bien probado
+- Menos trabajo
+
+_Artesanal_
+
+- Mayor control
+- Ni más ni menos
+
+<div class="page-header">
+  <h3 class="section-anchor" id="a_trabajar">A trabajar...</h3>
+</div>
+
+#### La tarea ####
+
+- Seleccionar un método de autenticación
+- Aplicarlo a **Personas**
+

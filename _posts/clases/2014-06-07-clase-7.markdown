@@ -1,0 +1,761 @@
+---
+layout: post
+title:  Clase 7 . El autocompletado
+date:   2014-06-07 16:00:00
+categories: clases
+sections:
+  javascript: 'JavaScript'
+  jquery: 'jQuery'
+  ambitos: 'Ámbitos'
+  autocompletado: 'Autocompletado'
+  a_trabajar: 'A trabajar...'
+
+---
+
+<div class="page-header">
+  <h3 class="section-anchor" id="javascript">JavaScript (inevitable)</h3>
+</div>
+
+#### El clásico ####
+
+**Hola mundo** versión JavaScript
+
+```html
+<script type="text/javascript">
+  alert('¡Hola mundo!')
+</script>
+```
+
+<div>
+  <a class="btn btn-default btn-xs" href="#" data-js="alert('¡Hola mundo!')">
+    Ejecutar
+  </a>
+</div>
+
+#### Lo ideal ####
+
+Poner **todo** el código en un archivo `.js` e importarlo
+
+```html
+<!-- src puede "apuntar" a cualquier URL -->
+<script src="/js/app.js" type="text/javascript"></script>
+```
+
+#### Variables ####
+
+```javascript
+var numero  = 5
+var cadena  = 'Sorprendente'
+var arreglo = [1, 2, 3, 'cuatro']
+var objeto  = {
+  uno: 1,
+  dos: 2,
+  tres: 3,
+  cuatro: 'cuatro'
+}
+```
+
+#### Condicionales ####
+
+```javascript
+var horaActual = new Date().getHours()
+
+if(horaActual < 12)
+  alert('Buenos días')
+else if(horaActual >= 12 && horaActual < 21)
+  alert('Buenas tardes')
+else
+  alert('Buenas noches')
+```
+
+<div>
+  <a class="btn btn-default btn-xs" href="#" data-js-container="#conditionals-example">
+    Ejecutar
+  </a>
+
+  <textarea class="hidden" id="conditionals-example">
+    var horaActual = new Date().getHours()
+
+    if(horaActual < 12)
+      alert('Buenos días')
+    else if(horaActual >= 12 && horaActual < 21)
+      alert('Buenas tardes')
+    else
+      alert('Buenas noches')
+  </textarea>
+</div>
+
+#### Diálogos ####
+
+
+```javascript
+if(confirm('¿Está seguro?'))
+  alert('Si, parece que está seguro')
+else
+  alert('No está seguro (o no se animó)')
+```
+
+<div>
+  <a class="btn btn-default btn-xs" href="#" data-js-container="#confirm-example">
+    Ejecutar
+  </a>
+
+  <textarea class="hidden" id="confirm-example">
+    if(confirm('¿Está seguro?'))
+      alert('Si, parece que está seguro')
+    else
+      alert('No está seguro (o no se animó)')
+  </textarea>
+</div>
+
+#### Entrada de datos ####
+
+```javascript
+var nombre = prompt('Ingrese su nombre')
+
+if(nombre)
+  alert('Hola ' + nombre)
+else
+  alert('No puedo saludar sin un nombre =)')
+```
+
+<div>
+  <a class="btn btn-default btn-xs" href="#" data-js-container="#prompt-example">
+    Ejecutar
+  </a>
+
+  <textarea class="hidden" id="prompt-example">
+    var nombre = prompt('Ingrese su nombre')
+
+    if(nombre)
+      alert('Hola ' + nombre)
+    else
+      alert('No puedo saludar sin un nombre =)')
+  </textarea>
+</div>
+
+#### Funciones ####
+
+```javascript
+function multiplicar(a, b) {
+  return a * b
+}
+
+alert('5 * 8 = ' + multiplicar(5, 8))
+```
+
+<div>
+  <a class="btn btn-default btn-xs" href="#" data-js-container="#function-example">
+    Ejecutar
+  </a>
+
+  <textarea class="hidden" id="function-example">
+    function multiplicar(a, b) {
+      return a * b
+    }
+
+    alert('5 * 8 = ' + multiplicar(5, 8))
+  </textarea>
+</div>
+
+#### Funciones <small>anónimas</small> ####
+
+
+```javascript
+var variable = '... soy global'
+
+!function() {
+  var variable = '... soy local'
+
+  alert('Dentro de la función ' + variable)
+}()
+
+alert('Fuera de la función ' + variable)
+```
+
+<div>
+  <a class="btn btn-default btn-xs" href="#" data-js-container="#anonymous-function-example">
+    Ejecutar
+  </a>
+
+  <textarea class="hidden" id="anonymous-function-example">
+    var variable = '... soy global'
+
+    !function() {
+      var variable = '... soy local'
+
+      alert('Dentro de la función ' + variable)
+    }()
+
+    alert('Fuera de la función ' + variable)
+  </textarea>
+</div>
+
+#### Bucles con `for` ####
+
+```javascript
+for(var i = 0; i < 5; i++)
+  console.log('i vale ' + i)
+```
+
+<div>
+  <a class="btn btn-default btn-xs" href="#" data-js-container="#for-example">
+    Ejecutar
+  </a>
+
+  <textarea class="hidden" id="for-example">
+    for(var i = 0; i < 5; i++) console.log('i vale ' + i)
+  </textarea>
+</div>
+
+#### Bucles con `while` ####
+
+```javascript
+var i = 0
+
+while(i < 5)
+  console.log('i vale ' + i++)
+```
+
+<div>
+  <a class="btn btn-default btn-xs" href="#" data-js-container="#while-example">
+    Ejecutar
+  </a>
+
+  <textarea class="hidden" id="while-example">
+    var i = 0
+
+    while(i < 5)
+      console.log('i vale ' + i++)
+  </textarea>
+</div>
+
+O bien
+
+```javascript
+var i = 0
+
+do {
+  console.log('i vale ' + i++)
+} while(i < 5)
+```
+
+<div>
+  <a class="btn btn-default btn-xs" href="#" data-js-container="#do-while-example">
+    Ejecutar
+  </a>
+
+  <textarea class="hidden" id="do-while-example">
+    var i = 0
+
+    do {
+      console.log('i vale ' + i++)
+    } while(i < 5)
+  </textarea>
+</div>
+
+#### Bucles con `forEach` ####
+
+```javascript
+[1, 2, 3, 4, 5].forEach(function(i) {
+  console.log('i vale ' + i)
+})
+```
+
+<div>
+  <a class="btn btn-default btn-xs" href="#" data-js-container="#for-each-example">
+    Ejecutar
+  </a>
+
+  <textarea class="hidden" id="for-each-example">
+    [1, 2, 3, 4, 5].forEach(function(i) {
+      console.log('i vale ' + i)
+    })
+  </textarea>
+</div>
+
+#### Eventos ####
+
+<p id="prueba">
+  Este párrafo tiene el ID <code>prueba</code>
+</p>
+
+```javascript
+function hizoClick() {
+  alert('Hicieron click en el párrafo')
+}
+
+var parrafo = document.getElementById('prueba')
+
+// 3er argumento false = bubbling, true = capturing
+parrafo.addEventListener('click', hizoClick, false)
+```
+
+<div>
+  <a class="btn btn-default btn-xs" href="#" data-js-container="#event-example">
+    Ejecutar
+  </a>
+
+  <textarea class="hidden" id="event-example">
+    function hizoClick() {
+      alert('Hicieron click en el párrafo')
+    }
+
+    var parrafo = document.getElementById('prueba')
+
+    // 3er argumento false = bubbling, true = capturing
+    parrafo.addEventListener('click', hizoClick, false)
+  </textarea>
+</div>
+
+#### Más eventos ####
+
+<p id="editable">
+  Este párrafo tiene el ID <code>editable</code>
+</p>
+
+```javascript
+var parrafo = document.getElementById('editable')
+
+parrafo.addEventListener('click', function() {
+  this.innerHTML += ' ... y puedo modificarlo'
+}, false)
+```
+
+<div>
+  <a class="btn btn-default btn-xs" href="#" data-js-container="#second-event-example">
+    Ejecutar
+  </a>
+
+  <textarea class="hidden" id="second-event-example">
+    var parrafo = document.getElementById('editable')
+
+    parrafo.addEventListener('click', function() {
+      this.innerHTML += ' ... y puedo modificarlo'
+    }, false)
+  </textarea>
+</div>
+
+#### Excepciones ####
+
+```javascript
+try {
+  boom
+} catch(error) {
+  alert('Ups... ' + error)
+}
+```
+
+<div>
+  <a class="btn btn-default btn-xs" href="#" data-js-container="#exceptions-example">
+    Ejecutar
+  </a>
+
+  <textarea class="hidden" id="exceptions-example">
+    try {
+      boom
+    } catch(error) {
+      alert('Ups... ' + error)
+    }
+  </textarea>
+</div>
+
+#### JS _no intrusivo_ ####
+
+¿Para qué? Para no usar `onclick` y sus hermanos =)
+
+Cada vez que alguien lo usa, se **muere** un gatito…
+
+#### En Rails... ####
+
+Tenemos que **incluir** la librería <abbr title="Unobtrusive JavaScript (JavaScript no intrusivo)">UJS</abbr>, para jQuery sería:
+
+```javascript
+// En app/assets/javascript/application.js
+//= require jquery
+//= require jquery_ujs
+```
+
+#### ¿Y que hacemos? ####
+
+```html
+<form data-confirm="¿Está seguro?">
+  ...
+</form>
+```
+
+```javascript
+// Esto lo hace jquery_ujs
+// NO hace falta, es para "conocer el interior"
+$('form[data-confirm]').submit(function() {
+  return confirm($(this).data('confirm'))
+})
+```
+
+Y por lo mismo...
+
+```html
+<!-- Mostrar "Guardando..." cuando hacen clic -->
+<input type="submit" value="Guardar" data-disable-with="Guardando..." />
+
+<!-- También debería tener un data-confirm -->
+<a href="/personas/1" data-method="delete" rel="nofollow">
+  Eliminar persona
+</a>
+```
+
+#### Remotos... ####
+
+Para ejecutar acciones _asíncronas_ se usa `data-remote`
+
+```html
+<a href="/mensajes/1/enviar" data-remote="true">
+  Enviar
+</a>
+```
+
+```javascript
+// De nuevo, NO hace falta
+$('a[data-remote]').click(function() {
+  $.ajax($(this).attr('href'))
+  return false
+})
+```
+
+Para más detalles ver https://github.com/rails/jquery-ujs/wiki/Unobtrusive-scripting-support-for-jQuery
+
+<div class="page-header">
+  <h3 class="section-anchor" id="jquery">jQuery</h3>
+</div>
+
+#### La referencia ####
+
+El hogar de la documentación: https://api.jquery.com
+
+#### La inclusión ####
+
+```html
+<!-- Sin Rails -->
+<script src="jquery.js" type="text/javascript"></script>
+```
+
+```javascript
+// En Rails, dentro de app/assets
+// y en un archivo con cualquier nombre (.js)
+//
+//= require jquery
+//= require jquery_ujs
+//= require xx
+```
+
+#### LA función ####
+
+La función principal que define jQuery es `$`
+
+#### Selectores ####
+
+```javascript
+// Elemento con ID menu
+$('#menu')
+// Todos los párrafos
+$('p')
+// Todos los elementos con clase "seleccionar"
+$('.seleccionar')
+// Todos los elementos input, textarea, select y button
+$(':input')
+```
+
+#### Eventos... ####
+
+<p id="prueba-jq">
+  Este párrafo tiene el ID <code>prueba-jq</code>
+</p>
+
+```javascript
+$('#prueba-jq').click(function() {
+  alert('Hicieron click en el párrafo')
+})
+```
+
+<div>
+  <a class="btn btn-default btn-xs" href="#" data-js-container="#jq-events-example">
+    Ejecutar
+  </a>
+
+  <textarea class="hidden" id="jq-events-example">
+    $('#prueba-jq').click(function() {
+      alert('Hicieron click en el párrafo')
+    })
+  </textarea>
+</div>
+
+#### Efectos... ####
+
+<p class="resaltar">
+  Este párrafo tiene la clase <code>resaltar</code>
+</p>
+
+<p class="pulsar">
+  Este párrafo tiene la clase <code>pulsar</code>
+</p>
+
+```javascript
+$('.resaltar').click(function() {
+  $(this).effect('highlight')
+})
+
+$('.pulsar').click(function() {
+  $(this).effect('pulsate')
+})
+```
+
+<div>
+  <a class="btn btn-default btn-xs" href="#" data-js-container="#efects-example">
+    Ejecutar
+  </a>
+
+  <textarea class="hidden" id="efects-example">
+    $('.resaltar').click(function() {
+      $(this).effect('highlight')
+    })
+
+    $('.pulsar').click(function() {
+      $(this).effect('pulsate')
+    })
+  </textarea>
+</div>
+
+#### Recorrer... ####
+
+En este párrafo cada número tienen la clase `numero` <span class="numero">1</span>, <span class="numero">2</span>, <span class="numero">3</span>, etc...
+
+```javascript
+var total = 0
+
+$('.numero').each(function() {
+  total += +$(this).text()
+})
+
+alert('La suma de los números es ' + total)
+```
+
+<div>
+  <a class="btn btn-default btn-xs" href="#" data-js-container="#numbers-example">
+    Ejecutar
+  </a>
+
+  <textarea class="hidden" id="numbers-example">
+    var total = 0
+
+    $('.numero').each(function() {
+      total += +$(this).text()
+    })
+
+    alert('La suma de los números es ' + total)
+  </textarea>
+</div>
+
+#### Modificar... ####
+
+En este párrafo cada número tienen la clase `incrementar` <span class="incrementar">1</span>, <span class="incrementar">2</span>, <span class="incrementar">3</span>, etc...
+
+```javascript
+$('.incrementar').each(function() {
+  $(this).text(+$(this).text() + 1)
+})
+```
+
+<div>
+  <a class="btn btn-default btn-xs" href="#" data-js-container="#increment-example">
+    Ejecutar
+  </a>
+
+  <textarea class="hidden" id="increment-example">
+    $('.incrementar').each(function() {
+      $(this).text(+$(this).text() + 1)
+    })
+  </textarea>
+</div>
+
+#### Preguntar... ####
+
+<p class="alternar">
+  Este párrafo tiene la clase <code>alternar</code>
+</p>
+
+```javascript
+// Podríamos usar .slideToggle()
+$('.alternar').each(function() {
+  if($(this).is(':visible'))
+    $(this).slideUp() // podría ser .hide()
+  else
+    $(this).slideDown() // podría ser .show()
+})
+```
+
+<div>
+  <a class="btn btn-default btn-xs" href="#" data-js-container="#toggle-example">
+    Ejecutar
+  </a>
+
+  <textarea class="hidden" id="toggle-example">
+    $('.alternar').each(function() {
+      if($(this).is(':visible'))
+        $(this).slideUp()
+      else
+        $(this).slideDown()
+    })
+  </textarea>
+</div>
+
+<div class="page-header">
+  <h3 class="section-anchor" id="ambitos">Ámbitos</h3>
+</div>
+
+#### Definición =) ####
+
+Sirven para _abreviar_ y agrupar consultas
+
+#### Ejemplos ####
+
+```ruby
+class Persona < ActiveRecord::Base
+  scope :activa,    -> { where(activa: true) }
+  scope :con_padre, -> { where.not(padre_id: nil) }
+  scope :por_edad,  -> { order('nacimiento ASC') }
+end
+
+# Entonces podemos pedir:
+Persona.activa # o
+Persona.con_padre # o
+Persona.activa.con_padre.por_edad
+```
+
+#### Con argumentos ####
+
+```ruby
+class Persona < ActiveRecord::Base
+  scope :con_nombre, ->(nombre) {
+    where('LOWER(nombre) LIKE ?', "#{nombre}%".downcase)
+  }
+end
+
+# Entonces podemos pedir:
+Persona.con_nombre 'juan'
+```
+
+#### Equivalente <small>y preferido</small> ####
+
+Con <abbr title="A Relational Algebra">ARel</abbr> es equivalente declarar un método con el nombre del ámbito
+
+```ruby
+class Persona < ActiveRecord::Base
+  def self.con_nombre(nombre)
+    where('LOWER(nombre) LIKE ?', "#{nombre}%".downcase)
+  end
+end
+```
+
+#### Encadenados ####
+
+```ruby
+class Persona < ActiveRecord::Base
+  scope :joven, -> { where('nacimiento <= ?', 15.years.ago) }
+  scope :programador_pulga, -> {
+    joven.where(profesion: 'Programador')
+  }
+end
+```
+
+#### Composición ####
+
+```ruby
+class Mensaje < ActiveRecord::Base
+  scope :recientes, -> { where "#{table_name}.created_at > ?", 2.days.ago }
+end
+
+class Persona < ActiveRecord::Base
+  def self.con_nombre(nombre)
+    where("LOWER(nombre) LIKE ?", "#{nombre}%".downcase)
+  end
+
+  def self.con_nombre_y_mensajes_recientes(nombre)
+    # Mensajes.recientes es un ámbito definido en otro modelo
+    # Seguramente hay que agregar references(:mensajes)
+    con_nombre(nombre).joins(:mensajes).merge(Mensaje.recientes)
+  end
+end
+```
+
+<div class="page-header">
+  <h3 class="section-anchor" id="autocompletado">Autocompletado</h3>
+</div>
+
+#### El controlador ####
+
+```ruby
+def index
+  if params[:q].present?
+    @personas = Persona.con_nombre(params[:q])
+  end
+end
+```
+
+#### La vista ####
+
+```html+erb
+<%= form_for(@mensaje) do |f| %>
+  <div class="field">
+    <%= f.label :persona %><br>
+    <%= f.text_field(
+      :persona,
+      data: {
+        autocomplete_for: '#mensaje_persona_id',
+        autocomplete_url: personas_path
+      }
+    ) %>
+    <%= f.hidden_field :persona_id %>
+  </div>
+<% end %>
+```
+
+#### Javascript ####
+
+Vamos a requerir jQuery UI (https://github.com/joliss/jquery-ui-rails)
+
+```javascript
+jQuery(function($) {
+  $(document).on('focus', '[data-autocomplete-url]:not(.ui-autocomplete-input)', function() {
+    var input = $(this)
+    input.autocomplete({
+      source: function(request, response) {
+        $.ajax({
+          url:      input.data('autocomplete-url'),
+          data:     { q: request.term },
+          dataType: 'json',
+          success:  function(data) {
+            response(
+              $.map(data, function(item) {
+                return { label: item.nombre, object: item }
+              })
+            )
+          },
+        })
+      },
+      select: function(event, ui) {
+        input.val(ui.item.label)
+        $(input.data('autocomplete-for')).val(ui.item.object.id)
+      }
+    })
+  })
+})
+```
+
+<div class="page-header">
+  <h3 class="section-anchor" id="a_trabajar">A trabajar...</h3>
+</div>
+
+#### La tarea ####
+
+- Agregar mensajes al foro
+- Cargar las personas de los mensajes con autocompletado

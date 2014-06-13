@@ -587,7 +587,7 @@ $('.incrementar').each(function() {
 // Podríamos usar .slideToggle()
 $('.alternar').each(function() {
   if($(this).is(':visible'))
-    $(this).slideUp() // podría ser .hide()
+    $(this).slideUp()   // podría ser .hide()
   else
     $(this).slideDown() // podría ser .show()
 })

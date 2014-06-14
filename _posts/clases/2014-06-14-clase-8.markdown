@@ -1,0 +1,457 @@
+---
+layout: post
+title:  Clase 8 . Las pruebas
+date:   2014-06-14 16:00:00
+categories: clases
+sections:
+  conceptos: 'Conceptos'
+  unitarias: 'Unitarias'
+  funcionales: 'Funcionales'
+  de_integracion: 'De integración'
+  a_probar: 'A probar...'
+
+---
+
+<div class="page-header">
+  <h3 class="section-anchor" id="conceptos">Conceptos</h3>
+</div>
+
+#### ¿Para qué? ####
+
+- ¿Para que probar un auto?
+- ¿Un barco?
+- ¿Y un **avión**?
+
+#### Pero _no_ lo van a ver... ####
+
+- ¿La _calidad_?
+- ¿Los pocos problemas?
+- ¿La **confianza**?
+
+#### Pero soy muy bueno... ####
+
+Bueno, bueno, ya se entendió...
+
+#### Los ambientes ####
+
+Hay **tres** ambientes, todos distintos e iguales (¿?)
+
+- Producción → `production`
+- Desarrollo → `development`
+- Pruebas → `test`
+
+#### Separación ####
+
+**Todos** los ambientes tienen _su_ base de datos
+
+#### Configuración ####
+
+En `config/database.yml`
+
+```yaml
+development:
+  #...
+  database: 'db/development.sqlite3'
+
+test:
+  #...
+  database: 'db/test.sqlite3'
+
+production:
+  #...
+  database: 'db/production.sqlite3'
+```
+
+#### Datos ####
+
+Los _datos iniciales_ se cargan en **fixtures** y residen en `test/fixtures`
+
+#### <abbr title="Embedded RuBy (Ruby embebido)">ERB</abbr> en `fixtures` ####
+
+Podemos usar <abbr title="Embedded RuBy (Ruby embebido)">ERB</abbr> para insertar datos _dinámicos_
+
+```yaml
+# En personas.yml
+anakin:
+  nombre: 'Anakin'
+  apellido: 'Skywalker'
+  correo: 'anakin@skywalker.me'
+  password_digest: '<%= BCrypt::Password.create("123") %>'
+```
+
+#### Obteniendo datos ####
+
+Tenemos una **función** por _fixture_ con el mismo nombre
+
+```ruby
+# Buscando a ...Anakin...
+@persona = personas(:anakin)
+```
+
+#### Lo "destacado" ####
+
+- `setup` <span class="text-muted small">Se ejecuta **antes** de cada prueba</span>
+- `teardown` <span class="text-muted small">Se ejecuta **después** de cada prueba</span>
+
+#### El ejemplo ####
+
+```ruby
+test 'uno mas uno es dos' do
+  # assert_equal valor_esperado, calculo_del_valor
+  assert_equal 2, 1 + 1
+end
+```
+
+#### Aserciones ####
+
+Comunes:
+
+- `assert` <span class="text-muted small">falla si el argumento es falso</span>
+- `assert_equal` <span class="text-muted small">falla si los argumentos no son iguales</span>
+- `assert_difference` <span class="text-muted small">prueba cambios numéricos</span>
+
+No tan comunes:
+
+- `assert_match` <span class="text-muted small">falla si el argumento no concuerda</span>
+- `assert_nil` <span class="text-muted small">falla si el argumento no es nil</span>
+- `assert_kind_of` <span class="text-muted small">falla si el tipo argumento no concuerda</span>
+- `assert_raise` <span class="text-muted small">falla si no se genera una excepción</span>
+
+#### Un número simple ####
+
+```ruby
+test 'suma' do
+  assert_equal 4, Numero.new(2) + Numero.new(2)
+end
+
+test 'multiplicacion' do
+  assert_equal 8, Numero.new(2) * Numero.new(4)
+end
+
+test 'prueba de tipo' do
+  assert_raise(RuntimeError) { Numero.new('a') }
+end
+```
+
+#### Pruebas en Rails ####
+
+Todas las pruebas están en el directorio `test`
+
+#### Dentro de `test` ####
+
+- `fixtures` <span class="text-muted small">Donde viven los fixtures</span>
+- `controllers` <span class="text-muted small">Pruebas funcionales (controladores)</span>
+- `integration` <span class="text-muted small">Pruebas de integración (WOW)</span>
+- `mailers` <span class="text-muted small">Pruebas de envíos de correos</span>
+- `models` <span class="text-muted small">Pruebas unitarias</span>
+
+#### Dentro de `fixtures` ####
+
+Un <abbr title="YAML Ain't Markup Language (YAML no es otro lenguaje de marcado)">YAML</abbr> por tabla, ejemplo personas.yml
+
+```ruby
+anakin:
+  nombre: 'Anakin'
+  apellido: 'Skywalker'
+  correo: 'anakin@skywalker.me'
+  password_digest: '<%= BCrypt::Password.create("123") %>'
+
+luke:
+  nombre: 'Luke'
+  apellido: 'Skywalker'
+  correo: 'luke@skywalker.me'
+  password_digest: '<%= BCrypt::Password.create("123") %>'
+```
+
+<div class="page-header">
+  <h3 class="section-anchor" id="unitarias">Unitarias</h3>
+</div>
+
+#### Dentro de `models` ####
+
+Veamos que hay en `personas_test.rb`
+
+```ruby
+require 'test_helper'
+
+class PersonaTest < ActiveSupport::TestCase
+  # test "the truth" do
+  #   assert true
+  # end
+end
+```
+
+#### ¿Es la verdad `true`? ####
+
+Probemos ejecutar rake <kbd>test:units</kbd>
+
+```console
+# Running tests:
+
+.
+
+Finished tests in 0.2870s, 3.457 tests/s, 3.457 assertions/s.
+
+1 tests, 1 assertions, 0 failures, 0 errors, 0 skips
+```
+
+#### Algo con más sentido... ####
+
+```ruby
+class PersonaTest < ActiveSupport::TestCase
+  setup do
+    @persona = personas(:anakin)
+  end
+
+  test 'el nombre no puede estar en blanco' do
+    @persona.nombre = ''
+
+    assert @persona.invalid?
+    assert @persona.errors[:nombre].include?(
+      'no puede estar en blanco'
+    )
+  end
+end
+```
+
+Y probemos...
+
+```console
+Run options:
+
+# Running tests:
+
+F
+
+Finished tests in 0.3393s, 2.97 tests/s, 2.97 assertions/s.
+
+  1) Failure:
+  ...
+
+1 tests, 1 assertions, 1 failures, 0 errors, 0 skips
+```
+
+#### Hagamos que funcione... ####
+
+```ruby
+class Persona < ActiveRecord::Base
+  validates :nombre, presence: { message: 'no puede estar en blanco' }
+end
+```
+
+#### Nuevamente... ####
+
+Ejecutamos <kbd>rake test:units</kbd>
+
+```console
+# Running tests:
+
+.
+
+Finished tests in 0.371s, 2.99 tests/s, 8.86 assertions/s.
+
+1 tests, 3 assertions, 0 failures, 0 errors, 0 skips
+```
+
+Un éxito...
+
+#### Recomendaciones... ####
+
+Papá Franco dice:
+
+- Una prueba por validación _personalizada_
+- Una prueba **por función** _pública_
+- Una prueba por callback
+
+...como mínimo...
+
+<div class="page-header">
+  <h3 class="section-anchor" id="funcionales">Funcionales</h3>
+</div>
+
+#### ¿Que probamos? ####
+
+Probamos los **controladores**...
+
+- ¿Respondió? <span class="text-muted small">con la vista correcta y sin errores...</span>
+- ¿Redirigió? <span class="text-muted small">a donde debía...</span>
+- ¿Se autenticó?
+- ¿Se inicializó el mensaje?
+
+#### A mirar... ####
+
+Veamos `personas_controller_test.rb`
+
+```ruby
+test 'deberia obtener index' do
+  get :index
+  assert_response :success
+  assert_not_nil assigns(:personas)
+end
+```
+
+#### Probando diferencias ####
+
+```ruby
+test 'deberia crear persona' do
+  assert_difference 'Persona.count' do
+    post :create, persona: {
+      nombre: @persona.nombre,
+      apellido: @persona.apellido,
+      correo: @persona.correo,
+      password: '123',
+      password_confirmation: '123'
+    }
+  end
+
+  assert_redirected_to persona_url(assigns(:persona))
+end
+```
+
+#### Peticiones ####
+
+Tenemos:
+
+- `get`
+- `post`
+- `put`
+- `patch`
+- `head`
+- `delete`
+
+#### Los 4 hashes... ####
+
+- `assigns` <span class="text-muted small">todas las variables de **instancia**</span>
+- `cookies` <span class="text-muted small">cualquier _galleta_</span>
+- `flash` <span class="text-muted small">el contenido de **flash**</span>
+- `session` <span class="text-muted small">el contenido de **session**</span>
+
+#### Probando la vista ####
+
+Podemos _pispear_ con `assert_select`
+
+```ruby
+assert_select 'title', 'Listado de personas'
+
+assert_select 'nav.menu' do
+  assert_select 'ul' do
+    assert_select 'li.menu-item'
+  end
+end
+```
+
+#### Las rutas ####
+
+```ruby
+test 'deberia redirigir a personas' do
+  assert_routing '/personas/1', {
+    controller: 'personas',
+    action: 'show',
+    id: '1'
+  }
+end
+```
+
+<div class="page-header">
+  <h3 class="section-anchor" id="de_integracion">De integración</h3>
+</div>
+
+#### El propósito... ####
+
+Se utilizan para probar la **interacción** de más de un controlador
+
+#### Generadores ####
+
+Podemos generar por ejemplo
+
+```console
+$ rails g integration_test foro
+```
+
+#### Algunos métodos ####
+
+<table class="table table-hover table-bordered">
+  <thead>
+    <tr>
+      <th>Método</th>
+      <th>Propósito</th>
+    </tr>
+  </thead>
+	<tbody>
+    <tr>
+      <td><code>follow_redirect!</code></td>
+      <td>Sigue la última redirección</td>
+    </tr>
+    <tr>
+      <td><code>get_via_redirect</code></td>
+      <td>Usa GET y sigue la redirección</td>
+    </tr>
+    <tr>
+      <td><code>post_via_redirect</code></td>
+      <td>Usa POST y sigue la redirección</td>
+    </tr>
+    <tr>
+      <td><code>open_session</code></td>
+      <td>Abre una <strong>nueva</strong> sesión</td>
+    </tr>
+  </tbody>
+</table>
+
+#### El ejemplo ####
+
+```ruby
+test 'ingresar y ver personas y mensajes' do
+  get '/'
+  assert_response :success
+
+  post_via_redirect '/sesion', sesion: {
+    correo: personas(:anakin).correo,
+    password: '123'
+  }
+
+  assert_equal '/personas', path
+
+  get '/mensajes'
+  assert_response :success
+  assert assigns(:mensajes)
+end
+```
+
+#### Tareas de `rake` ####
+
+<table class="table table-hover table-bordered">
+	<thead>
+    <tr>
+      <th>Tarea</th>
+      <th>Propósito</th>
+    </tr>
+	</thead>
+	<tbody>
+    <tr>
+      <td><code>rake test</code></td>
+      <td>Corre <strong>todas</strong> las pruebas</td>
+    </tr>
+    <tr>
+      <td><code>rake test:units</code></td>
+      <td>Sólo pruebas unitarias</td>
+    </tr>
+    <tr>
+      <td><code>rake test ruta/test.rb</code></td>
+      <td>Solo el archivo <code>test.rb</code></td>
+    </tr>
+  </tbody>
+</table>
+
+#### Algunas sugerencias ####
+
+- No sobre-probar
+- Mantener cada prueba simple y concreta
+- Probar en un navegador real con `capybara`
+
+<div class="page-header">
+  <h3 class="section-anchor" id="a_probar">A probar...</h3>
+</div>
+
+- Agregar pruebas unitarias
+- Agregar pruebas funcionales
+- Agregar pruebas de integración

@@ -1,0 +1,311 @@
+---
+layout: post
+title:  Clase 9 . A producción
+date:   2014-06-27 16:00:00
+categories: clases
+sections:
+  capistrano: 'Capistrano'
+  vim: 'Vim'
+  ruby: 'Ruby'
+
+---
+
+<div class="page-header">
+  <h3 class="section-anchor" id="capistrano">Capistrano</h3>
+</div>
+
+#### _Instalación_ ####
+
+En el `Gemfile`
+
+```ruby
+group :development do
+  gem 'capistrano'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rails'
+  gem 'capistrano-rbenv'
+end
+```
+
+Y después ejecutamos <kbd>bundle install</kbd> y <kbd>cap install</kbd>
+
+#### Internas ####
+
+Dentro de `config/deploy.rb`
+
+```ruby
+set :application, 'foro'
+set :repo_url, 'https://github.com/rubyutn/foro.git'
+
+set :deploy_to, '/var/www/foro'
+
+set :log_level, :info
+set :linked_dirs, %w{log}
+set :keep_releases, 5
+
+set :rbenv_ruby, '2.1.2'
+```
+
+Después, tenemos para cada ambiente la configuración específica en `config/deploy/xx.rb`. Por ejemplo `production.rb`
+
+```ruby
+role :app, %w{deployer@foro.quieroruby.com.ar}
+role :web, %w{deployer@foro.quieroruby.com.ar}
+role :db,  %w{deployer@foro.quieroruby.com.ar}
+
+server 'foro.quieroruby.com.ar', user: 'deployer', roles: %w{web app}
+```
+
+Otro archivo importante es `Capifile`
+
+```ruby
+require 'capistrano/setup'
+
+require 'capistrano/deploy'
+
+require 'capistrano/rbenv'
+require 'capistrano/bundler'
+require 'capistrano/rails/assets'
+require 'capistrano/rails/migrations'
+
+Dir.glob('lib/capistrano/tasks/*.rake').each { |r| import r }
+```
+
+#### Las tareas ####
+
+Las tareas mas usadas...
+
+- <kbd>cap production deploy</kbd>
+- <kbd>cap production deploy:rollback</kbd>
+- <kbd>cap production deploy:cleanup</kbd>
+
+<kbd>cap -T<kbd> para ver la lista
+
+<div class="page-header">
+  <h3 class="section-anchor" id="vim">Vim</h3>
+</div>
+
+#### El tutor ####
+
+Con <kbd>vimtutor</kbd> se aprenden las operaciones **básicas**
+
+#### _Patógeno_ ####
+
+Si no tienen un método _predilecto_ de manejor de complementos, pueden usar `vim-pathogen`:
+
+```console
+$ mkdir -p ~/.vim/autoload ~/.vim/bundle && curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+```
+
+Y después, en nuestro `~/.vimrc`:
+
+```vim
+execute pathogen#infect()
+```
+
+#### Especializando ####
+
+Para utilizar `vim` con Rails, lo mejor es `vim-rails` (https://github.com/tpope/vim-rails)
+
+Con `pathogen` su instalación sería:
+
+```console
+$ cd ~/.vim/bundle
+$ git clone git://github.com/tpope/vim-rails.git
+$ git clone git://github.com/tpope/vim-bundler.git
+```
+
+#### Combinaciones <small>mágicas</small> ####
+
+- `gf` _adivina_ el archivo al que tiene que ir
+- `:A` _alterna_ entre el archivo y un “hermano”
+- `:R` _relaciona_ y cambia según el contexto
+- `:Emodel` modelo relacionado
+- `:Eview` vista relacionada
+- `:Econtroller` controlador relacionado
+- `:h rails-navigation` para despejar dudas
+
+#### `Rake` ####
+
+Con el comando `:Rake` podemos
+
+- Ejecutar solo la prueba actual
+- Correr una migración particular
+- Cargar un fixture
+
+Nunca está de más consultar `:h rails-rake`
+
+#### Automatizaciones ####
+
+Se pueden ejecutar los _scripts_ de Rails como
+
+```console
+$ rails g controller articulos
+```
+
+Con Con `:Rgenerate controller articulos`
+
+#### Extracciones ####
+
+`:Rextract` es _magia_ que necesita una demo =) (Siempre se puede consultar `:h rails-refactoring`)
+
+#### Más _agregados_ ####
+
+- `vim-endwise`
+- `vim-autoclose`
+- `vim-snipmate` y `vim-snippets`
+- `vim-abolish`
+- `splitjoin.vim`
+
+#### `ERB` + `snipmate` ####
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Combinación</th>
+      <th>Resultado</th>
+    </tr>
+  </thead>
+	<tbody>
+    <tr>
+      <td><kbd>rc[tab]</kbd></td>
+      <td><code>&lt;%  %&gt;</code></td>
+    </tr>
+    <tr>
+      <td><kbd>rce[tab]</kbd></td>
+      <td><code>&lt;%=  %&gt;</code></td>
+    </tr>
+    <tr>
+      <td><kbd>lt[tab]</kbd></td>
+      <td><code>&lt;%= link_to "name", dest %&gt;</code></td>
+    </tr>
+    <tr>
+      <td><kbd>rp[tab]</kbd></td>
+      <td><code>&lt;%= render :partial =&gt; 'item' %&gt;</code></td>
+    </tr>
+  </tbody>
+</table>
+
+#### Ruby _a la_ `snipmate` ####
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Combinación</th>
+      <th>Resultado</th>
+    </tr>
+  </thead>
+	<tbody>
+    <tr>
+      <td><kbd>r[tab]</kbd></td>
+      <td><code>attr_reader :attr_names</code></td>
+    </tr>
+    <tr>
+      <td><kbd>ea[tab]</kbd></td>
+      <td><code>each { |e| }</code></td>
+    </tr>
+    <tr>
+      <td><kbd>inj[tab]</kbd></td>
+      <td><code>inject(init) { |mem, var| }</code></td>
+    </tr>
+    <tr>
+      <td><kbd>as[tab]</kbd></td>
+      <td><code>assert test, "Failure message"</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="page-header">
+  <h3 class="section-anchor" id="ruby">Ruby</h3>
+</div>
+
+#### Repasando `included` ####
+
+```ruby
+module Persistente
+  module ClassMethods
+    def buscar(parametros)
+      puts 'buscar invocado'
+    end
+  end
+
+  def self.included(clase)
+    clase.extend ClassMethods
+  end
+end
+
+class Persona
+  include Persistente
+end
+
+Persona.buscar 'algo'
+```
+
+#### Y `method_added` ####
+
+```ruby
+class Prueba
+  def self.method_added(nombre)
+    puts "Se definió el método #{nombre}"
+  end
+
+  def pedro
+  end
+
+  def vilma
+  end
+end
+```
+
+#### Siguiendo la pista ####
+
+```ruby
+class Ejemplo
+  include Trazable
+
+  def metodo(arg1, arg2)
+    arg1 + arg2
+  end
+end
+
+ej = Ejemplo.new
+ej.metodo(4, 5)
+
+# ==> Llamando a metodo con [4, 5]
+# <<= devuelve 9
+```
+
+```ruby
+module Trazable
+  def self.included(clase)
+    def clase.method_added(nombre)
+      return if @_agregando_metodo
+
+      @_agregando_metodo = true
+
+      metodo_original = "#{nombre} original"
+      alias_method metodo_original, nombre
+
+      define_method(nombre) do |*args, &block|
+        puts "Llamando a metodo con #{args.inspect}"
+        resultado = send metodo_original, *args, &block
+
+        puts "<<= devuelve #{resultado}"
+        resultado
+      end
+
+      @_agregando_metodo = false
+    end
+  end
+end
+```
+
+#### Midiendo ####
+
+```ruby
+# Previo require 'benchmark'
+
+tiempos = Benchmark.measure do
+  resultado = send metodo_original, *args, &block
+end
+```

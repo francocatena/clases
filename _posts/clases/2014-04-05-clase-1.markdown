@@ -34,7 +34,7 @@ Si disfrutás _armar_ (o desarmar) _cosas_, si, es para vos
 
 Preferentemente conocer como funciona [HTTP][], nada que con entusiasmo no se pueda aprender...
 
-[HTTP]: http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol "Hypertext Transfer Protocol"
+[HTTP]: https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol "Hypertext Transfer Protocol"
 
 #### ¿Tengo que saber inglés? ####
 
@@ -192,7 +192,7 @@ No podemos ignorarlos en un curso así =)
 - Tecnologías (compresión, protocolos...)
 - Popularidad (no siempre gana el bueno...)
 
-[W3C]: http://www.w3.org/ "World Wide Web Consortium"
+[W3C]: https://www.w3.org/ "World Wide Web Consortium"
 [ECMAScript]: http://www.ecmascript.org/ "ECMAScript"
 
 <div class="page-header">

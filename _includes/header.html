@@ -23,7 +23,8 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Clases <b class="caret"></b></a>
           <ul class="dropdown-menu">
             {% for post in site.posts reversed %}
-              {% include menu_item.html url=post.url title=post.title %}
+              {% assign post_url = site.github.url | append: post.url %}
+              {% include menu_item.html url=post_url title=post.title %}
             {% endfor %}
           </ul>
         </li>

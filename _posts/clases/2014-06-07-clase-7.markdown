@@ -703,7 +703,7 @@ end
 
 #### La vista ####
 
-```html+erb
+```erb
 <%= form_for(@mensaje) do |f| %>
   <div class="field">
     <%= f.label :persona %><br>

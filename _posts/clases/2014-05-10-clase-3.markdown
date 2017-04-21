@@ -45,7 +45,7 @@ end
 
 En `views/personas/_form.html.erb` agregar:
 
-```html+erb
+```erb
 <div class="field">
   <%= f.label :correo %><br />
   <%= f.text_field :correo %>
@@ -58,7 +58,7 @@ En `views/personas/_form.html.erb` agregar:
 
 En `views/personas/show.html.erb`
 
-```html+erb
+```erb
 <p>
   <strong>Correo:</strong>
   <%= mail_to @persona.correo %>
@@ -67,7 +67,7 @@ En `views/personas/show.html.erb`
 
 En `views/personas/index.html.erb`
 
-```html+erb
+```erb
 <tr>
   <th>Nombre</th>
   <th>Apellido</th>
@@ -167,7 +167,7 @@ end
 En `views/personas/index.html.erb`
 
 
-```html+erb
+```erb
 <% @personas.each do |persona| %>
   <tr>
     <td><%= link_to "#{persona.nombre} #{persona.apellido}", persona %></td>
@@ -179,7 +179,7 @@ En `views/personas/index.html.erb`
 
 En `views/personas/show.html.erb`
 
-```html+erb
+```erb
 <p id="notice"><%= notice %></p>
 
 <h1>

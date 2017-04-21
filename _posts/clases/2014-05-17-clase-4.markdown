@@ -184,7 +184,7 @@ Los tradicionales
 #### Entendiendo `form_for` ####
 
 
-```html+erb
+```erb
 <%= form_for(@persona) do |f| %>
   <div class="field">
     <%= f.label :nombre %><br>
@@ -281,7 +281,7 @@ Los tradicionales
 #### Y usando eso... ####
 
 
-```html+erb
+```erb
 <%= link_to 'Nueva', new_persona_path %>
 <%= link_to 'Ver', persona_path(@persona) %>
 <%= link_to 'Editar', edit_persona_path(@persona) %>
@@ -353,7 +353,7 @@ def new
 end
 ```
 
-```html+erb
+```erb
 <!-- views/personas/new.html.rb -->
 <h1><%= @persona.nombre %></h1>
 ```
@@ -543,7 +543,7 @@ end
 
 #### Mini plantilla ####
 
-```html+erb
+```erb
 <!doctype html>
 <html>
   <head>

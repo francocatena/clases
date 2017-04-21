@@ -1,4 +1,4 @@
-{% if include.url == page.url %}
+{% if include.url == page.url | prepend: site.github.url %}
   <li class="active">
 {% else %}
   <li>

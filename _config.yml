@@ -1,6 +1,5 @@
 name: Taller de Ruby
-markdown: redcarpet
-highlighter: pygments
+highlighter: rouge
 permalink: pretty
 kramdown:
   coderay_css: class
